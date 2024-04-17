@@ -1,3 +1,6 @@
+# KDE directory view preferences
+.directory
+
 # Godot 4+ specific ignores
 .godot/
 

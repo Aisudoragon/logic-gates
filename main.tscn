@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bi5hhpatujwm4"]
+
+[ext_resource type="PackedScene" uid="uid://vxc7l235kxff" path="res://backend/playground.tscn" id="1_wpl5c"]
+[ext_resource type="PackedScene" uid="uid://rauors3md384" path="res://frontend/main_menu.tscn" id="2_slwms"]
+
+[node name="Main" type="Node"]
+
+[node name="Playground" parent="." instance=ExtResource("1_wpl5c")]
+
+[node name="MainMenu" parent="." instance=ExtResource("2_slwms")]

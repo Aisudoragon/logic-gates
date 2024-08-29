@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 [gd_scene load_steps=2 format=3 uid="uid://rauors3md384"]
 
 [sub_resource type="Theme" id="Theme_oc2dk"]
+=======
+[gd_scene format=3 uid="uid://rauors3md384"]
+>>>>>>> 03b46d3 (Poprawieni plików i podświetlenie kładzonego elementu)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -9,4 +13,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+<<<<<<< HEAD
 theme = SubResource("Theme_oc2dk")
+=======
+mouse_filter = 1
+>>>>>>> 03b46d3 (Poprawieni plików i podświetlenie kładzonego elementu)

@@ -44,6 +44,7 @@ version_control/autoload_on_startup=true
 [file_customization]
 
 folder_colors={
+"res://assets/": "gray",
 "res://backend/": "orange",
 "res://frontend/": "red"
 }

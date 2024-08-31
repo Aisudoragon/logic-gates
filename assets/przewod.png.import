@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://w4krksxo5fwe"
-path="res://.godot/imported/and_gate.png-c86d76c1ecde76556cae8951d9f18b22.ctex"
+uid="uid://dx4pi5jspjrqc"
+path="res://.godot/imported/przewod.png-a7c323ba79ca6dd85a1b1ca9aad37951.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://and_gate.png"
-dest_files=["res://.godot/imported/and_gate.png-c86d76c1ecde76556cae8951d9f18b22.ctex"]
+source_file="res://assets/przewod.png"
+dest_files=["res://.godot/imported/przewod.png-a7c323ba79ca6dd85a1b1ca9aad37951.ctex"]
 
 [params]
 

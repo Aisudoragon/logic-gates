@@ -1,16 +1,17 @@
 extends Node2D
 
+var startDrawingPos: Vector2i
 @onready var wire_grid: TileMapLayer = $WireGrid
 @onready var highlight: TileMapLayer = $Highlight
-var startDrawingPos: Vector2i
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	highlight.clear()
 	var mouse_position: Vector2i = wire_grid.local_to_map(wire_grid.get_local_mouse_position())
 
 	if event.is_action_pressed("place"):
 		startDrawingPos = mouse_position
+
+	highlight.clear()
 
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		draw_wire(startDrawingPos, mouse_position, highlight, 1)
@@ -18,6 +19,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		highlight.set_cell(mouse_position, 0, Vector2i(0,0), 1)
 	if event.is_action_released("place"):
 		draw_wire(startDrawingPos, mouse_position, wire_grid, 0)
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		wire_grid.set_cell(mouse_position, 0)
 
 
 func draw_wire(start_pos: Vector2i, end_pos: Vector2i, grid: TileMapLayer, alt: int) -> void:
@@ -39,4 +42,4 @@ func draw_wire(start_pos: Vector2i, end_pos: Vector2i, grid: TileMapLayer, alt: 
 						max_pos.y
 				)
 		)
-		grid.set_cell(new_cell_pos, 0 as int, Vector2i(0, 0), alt)
+		grid.set_cell(new_cell_pos, 0, Vector2i(0, 0), alt)

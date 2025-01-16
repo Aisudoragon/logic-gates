@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://be3lmpimq4bjl"]
+
+[ext_resource type="Texture2D" uid="uid://cj86b6py6lf00" path="res://icon.svg" id="1_l4xwl"]
+
+[node name="OrGate" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_l4xwl")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(-78, -27)
+
+[node name="Marker2D2" type="Marker2D" parent="."]
+position = Vector2(-79, 32)
+
+[node name="Marker2D3" type="Marker2D" parent="."]
+position = Vector2(86, -4)

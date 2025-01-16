@@ -23,6 +23,19 @@ func _unhandled_input(event: InputEvent) -> void:
 		wire_grid.set_cell(mouse_position, 0)
 
 
+func _process(_delta: float) -> void:
+	queue_redraw()
+
+
+func _draw() -> void:
+	var size: Vector2 = get_viewport_rect().size * $Camera2D.zoom / 2
+	var cam: Vector2 = $Camera2D.position
+	for i in range(int((cam.x - size.x) / 42) - 1, int ((size.x + cam.x) / 42) + 1):
+		draw_line(Vector2(i * 42, cam.y + size.y + 100), Vector2(i * 42, cam.y - size.y - 100), "00000030")
+	for i in range(int((cam.y - size.y) / 42) - 1, int((size.y + cam.y) / 42) + 1):
+		draw_line(Vector2(cam.x + size.x + 100, i * 42), Vector2(cam.x - size.x - 100, i * 42), "00000030")
+
+
 func draw_wire(start_pos: Vector2i, end_pos: Vector2i, grid: TileMapLayer, alt: int) -> void:
 	var tiles_len : Vector2i = end_pos - start_pos
 	var min_pos : Vector2i = start_pos.min(end_pos)

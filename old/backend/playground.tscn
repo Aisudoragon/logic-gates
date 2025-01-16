@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://vxc7l235kxff"]
+[gd_scene load_steps=4 format=3 uid="uid://vxc7l235kxff"]
 
-[ext_resource type="Script" path="res://backend/playground.gd" id="1_sfim1"]
+[ext_resource type="Script" path="res://old/backend/playground.gd" id="1_sfim1"]
 [ext_resource type="TileSet" uid="uid://dhfs68s3itmxi" path="res://assets/resources/wire_tileset.tres" id="1_twk4i"]
+[ext_resource type="Script" path="res://old/backend/camera_2d.gd" id="3_jwer7"]
 
 [node name="Playground" type="Node2D"]
 script = ExtResource("1_sfim1")
@@ -15,3 +16,6 @@ navigation_enabled = false
 tile_set = ExtResource("1_twk4i")
 collision_enabled = false
 navigation_enabled = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("3_jwer7")

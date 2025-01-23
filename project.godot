@@ -12,8 +12,9 @@ config_version=5
 
 config/name="Logic gates"
 config/description="Graduation project for University of Rzeszów"
+config/version="0.1.0"
 config/tags=PackedStringArray("inżynierska", "uniwersytet")
-run/main_scene="res://main.tscn"
+run/main_scene="res://scenes/levels/playground.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
 
@@ -43,9 +44,8 @@ movie_writer/movie_file="/var/home/aisudoragon/Godot/logic_gates/movie.avi"
 
 folder_colors={
 "res://assets/": "gray",
-"res://old/backend/": "orange",
-"res://old/frontend/": "red",
-"res://scenes/": "green"
+"res://scenes/": "green",
+"res://scripts/": "blue"
 }
 
 [input]

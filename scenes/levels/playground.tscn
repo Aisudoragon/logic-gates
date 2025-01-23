@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://vxc7l235kxff"]
+
+[ext_resource type="Script" path="res://scripts/levels/playground.gd" id="1_ywb2o"]
+[ext_resource type="TileSet" uid="uid://dhfs68s3itmxi" path="res://assets/resources/tilesets/wire_tileset.tres" id="2_mw4bp"]
+[ext_resource type="Texture2D" uid="uid://cj86b6py6lf00" path="res://icon.svg" id="3_cfd3d"]
+[ext_resource type="Script" path="res://scripts/levels/camera_2d.gd" id="3_dsu8x"]
+[ext_resource type="TileSet" uid="uid://boqjjkshra24t" path="res://assets/resources/tilesets/gate_tileset.tres" id="4_myh4h"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qivgt"]
+texture = ExtResource("3_cfd3d")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+1:0/0/custom_data_0 = true
+
+[sub_resource type="TileSet" id="TileSet_1jhvd"]
+tile_size = Vector2i(64, 64)
+custom_data_layer_0/name = "state"
+custom_data_layer_0/type = 1
+sources/0 = SubResource("TileSetAtlasSource_qivgt")
+
+[node name="Playground" type="Node2D"]
+script = ExtResource("1_ywb2o")
+
+[node name="LogicLayer" type="TileMapLayer" parent="."]
+tile_set = SubResource("TileSet_1jhvd")
+
+[node name="WireLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_mw4bp")
+collision_enabled = false
+navigation_enabled = false
+
+[node name="GateLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("4_myh4h")
+
+[node name="HighlightLayer" type="TileMapLayer" parent="."]
+self_modulate = Color(1, 1, 1, 0.521569)
+tile_set = ExtResource("2_mw4bp")
+collision_enabled = false
+navigation_enabled = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+script = ExtResource("3_dsu8x")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -33.0
+offset_right = 56.0
+offset_bottom = 33.0
+grow_vertical = 2
+mouse_filter = 0
+alignment = 1
+
+[node name="Button4" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "SELECT"
+
+[node name="Button" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "WIRE"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "START"
+
+[node name="Button3" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "END"

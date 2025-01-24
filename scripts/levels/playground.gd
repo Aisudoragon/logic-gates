@@ -1,6 +1,6 @@
 extends Node2D
 
-var startDrawingPos: Vector2i
+var previous_tile: Vector2i
 @onready var wire_layer: TileMapLayer = $WireLayer
 @onready var gate_layer: TileMapLayer = $GateLayer
 @onready var highlight_layer: TileMapLayer = $HighlightLayer
@@ -13,94 +13,101 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseButton:
 		var event_mb: InputEventMouseButton = event
-		if event_mb.button_index == MOUSE_BUTTON_LEFT:
-			if event.is_pressed():
-				startDrawingPos = mouse_position
-			if event.is_released():
-				layout_wire(startDrawingPos, mouse_position, wire_layer)
-		layout_wire(startDrawingPos, mouse_position, highlight_layer)
-		if event_mb.button_index == MOUSE_BUTTON_RIGHT:
-			wire_layer.set_cell(mouse_position, 0)
+		if event.is_pressed() and event_mb.button_index == MOUSE_BUTTON_LEFT:
+			previous_tile = mouse_position
+
 	if event is InputEventMouseMotion:
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			layout_wire(startDrawingPos, mouse_position, highlight_layer)
-			print("test")
-
-	highlight_layer.clear()
-	highlight_layer.set_cell(mouse_position, 0, Vector2i(0,0), 0)
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not mouse_position == previous_tile:
+			connect_wire(mouse_position)
+			previous_tile = mouse_position
 
 
-func layout_wire(start_pos: Vector2i, end_pos: Vector2i, layer: TileMapLayer) -> void:
-	var tiles_len : Vector2i = end_pos - start_pos
-	var min_pos : Vector2i = start_pos.min(end_pos)
-	var max_pos : Vector2i = start_pos.max(end_pos)
-
-	for i in range(0, absi(tiles_len.x) + 1):
-		layer.set_cell(Vector2i(min_pos.x + i, min_pos.y), 0, Vector2i(4, 0), 2)
-	for i in range(0, absi(tiles_len.y) + 1):
-		layer.set_cell(Vector2(max_pos.x, min_pos.y + i), 0, Vector2i(4, 0), 2)
-
-	for i in range(0, absi(tiles_len.x) + 1):
-		var tile_pos: Vector2i = Vector2i(min_pos.x + i, min_pos.y)
-		var tile_info: Vector3i = connect_wire(tile_pos, layer)
-		layer.set_cell(tile_pos, 0, Vector2i(tile_info.x, tile_info.y), tile_info.z)
-	for i in range(0, absi(tiles_len.y) + 1):
-		var tile_pos: Vector2i = Vector2i(max_pos.x, min_pos.y + i)
-		var tile_info: Vector3i = connect_wire(tile_pos, layer)
-		layer.set_cell(tile_pos, 0, Vector2i(tile_info.x, tile_info.y), tile_info.z)
+func connect_wire(next_tile: Vector2i) -> void:
+	var direction: Vector2i = next_tile - previous_tile
+	print(direction)
+	update_wire_look(previous_tile, direction)
+	update_wire_look(next_tile, direction)
 
 
-func connect_wire(cell_position: Vector2i, layer: TileMapLayer) -> Vector3i:
-	var neighbors: Array[Vector2i] = layer.get_surrounding_cells(cell_position)
-	var right_n: bool = false if layer.get_cell_source_id(neighbors[0]) == -1 else true
-	var bottom_n: bool = false if layer.get_cell_source_id(neighbors[1]) == -1 else true
-	var left_n: bool = false if layer.get_cell_source_id(neighbors[2]) == -1 else true
-	var top_n: bool = false if layer.get_cell_source_id(neighbors[3]) == -1 else true
+func update_wire_look(tile_position: Vector2i, new_direction: Vector2i) -> void:
+	var right_direction: bool = false
+	var bottom_direction: bool = false
+	var left_direction: bool = false
+	var up_direction: bool = false
 
-	if right_n:
-		if bottom_n:
-			if left_n:
-				if top_n:
+	var data: TileData = highlight_layer.get_cell_tile_data(tile_position)
+	if data:
+		right_direction = data.get_custom_data("right_direction")
+		bottom_direction = data.get_custom_data("bottom_direction")
+		left_direction = data.get_custom_data("left_direction")
+		up_direction = data.get_custom_data("up_direction")
+
+	if new_direction == Vector2i.RIGHT:
+		right_direction = true
+	elif new_direction == Vector2i.DOWN:
+		bottom_direction = true
+	elif new_direction == Vector2i.LEFT:
+		left_direction = true
+	elif new_direction == Vector2i.UP:
+		up_direction = true
+
+	if right_direction:
+		if bottom_direction:
+			if left_direction:
+				if up_direction:
 					# right, bottom, left, top
-					return Vector3i(4, 0, 0)
+					highlight_layer.set_cell(tile_position, 0, Vector2i(4, 0), 0)
+					return
 				# right, bottom, left
-				return Vector3i(3, 0, 0)
-			elif top_n:
+				highlight_layer.set_cell(tile_position, 0, Vector2i(3, 0), 0)
+				return
+			elif up_direction:
 				# right, bottom, top
-				return Vector3i(3, 0, 3)
+				highlight_layer.set_cell(tile_position, 0, Vector2i(3, 0), 3)
+				return
 			# right, bottom
-			return Vector3i(2, 0, 0)
-		elif left_n:
-			if top_n:
+			highlight_layer.set_cell(tile_position, 0, Vector2i(2, 0), 0)
+			return
+		elif left_direction:
+			if up_direction:
 				# right, left, top
-				return Vector3i(3, 0, 2)
+				highlight_layer.set_cell(tile_position, 0, Vector2i(3, 0), 2)
+				return
 			# right, left
-			return Vector3i(1, 0, 1)
-		elif top_n:
+			highlight_layer.set_cell(tile_position, 0, Vector2i(1, 0), 1)
+			return
+		elif up_direction:
 			# right, top
-			return Vector3i(2, 0, 3)
+			highlight_layer.set_cell(tile_position, 0, Vector2i(2, 0), 3)
+			return
 		# right
-		return Vector3i(0, 0, 3)
-	elif bottom_n:
-		if left_n:
-			if top_n:
+		highlight_layer.set_cell(tile_position, 0, Vector2i(0, 0), 3)
+		return
+	elif bottom_direction:
+		if left_direction:
+			if up_direction:
 				# bottom, left, top
-				return Vector3i(3, 0, 1)
+				highlight_layer.set_cell(tile_position, 0, Vector2i(3, 0), 1)
+				return
 			# bottom, left
-			return Vector3i(2, 0, 1)
-		elif top_n:
+			highlight_layer.set_cell(tile_position, 0, Vector2i(2, 0), 1)
+			return
+		elif up_direction:
 			# bottom, top
-			return Vector3i(1, 0, 0)
+			highlight_layer.set_cell(tile_position, 0, Vector2i(1, 0), 0)
+			return
 		# bottom
-		return Vector3i(0, 0, 0)
-	elif left_n:
-		if top_n:
+		highlight_layer.set_cell(tile_position, 0, Vector2i(0, 0), 0)
+		return
+	elif left_direction:
+		if up_direction:
 			# left, top
-			return Vector3i(2, 0, 2)
+			highlight_layer.set_cell(tile_position, 0, Vector2i(2, 0), 2)
+			return
 		# left
-		return Vector3i(0, 0, 1)
-	elif top_n:
+		highlight_layer.set_cell(tile_position, 0, Vector2i(0, 0), 1)
+		return
+	elif up_direction:
 		# top
-		return Vector3i(0, 0, 2)
-	# none
-	return Vector3i(4, 0, 0)
+		highlight_layer.set_cell(tile_position, 0, Vector2i(0, 0), 2)
+		return

@@ -7,6 +7,7 @@ texture = ExtResource("3_bcvnh")
 texture_region_size = Vector2i(64, 64)
 0:0/next_alternative_id = 15
 0:0/0 = 0
+0:0/0/custom_data_1 = true
 0:0/1 = 1
 0:0/1/flip_h = true
 0:0/1/transpose = true
@@ -79,12 +80,12 @@ texture_region_size = Vector2i(64, 64)
 
 [resource]
 tile_size = Vector2i(64, 64)
-custom_data_layer_0/name = "right_neighbor"
+custom_data_layer_0/name = "right_direction"
 custom_data_layer_0/type = 1
-custom_data_layer_1/name = "bottom_neighbor"
+custom_data_layer_1/name = "bottom_direction"
 custom_data_layer_1/type = 1
-custom_data_layer_2/name = "left_neighbor"
+custom_data_layer_2/name = "left_direction"
 custom_data_layer_2/type = 1
-custom_data_layer_3/name = "up_neighbor"
+custom_data_layer_3/name = "up_direction"
 custom_data_layer_3/type = 1
 sources/0 = SubResource("TileSetAtlasSource_gh8p3")

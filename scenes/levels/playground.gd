@@ -1,7 +1,6 @@
 extends Node2D
 
 var previous_tile: Vector2i
-var next_wire_list: Array[Vector2i]
 @onready var wire_layer: TileMapLayer = $WireLayer
 @onready var gate_layer: TileMapLayer = $GateLayer
 @onready var highlight_layer: TileMapLayer = $HighlightLayer
@@ -154,38 +153,33 @@ func copy_highlight_into_layer() -> void:
 func toogle_start_gate() -> void:
 	var gates: Array[Vector2i] = gate_layer.get_used_cells_by_id(0, Vector2i(0, 0))
 	for gate_pos in gates:
-		var state: int = logic_layer.get_cell_alternative_tile(gate_pos)
-		if state == 0:
+		var state: bool = logic_layer.get_cell_tile_data(gate_pos).get_custom_data("state")
+		if state == false:
 			logic_layer.set_cell(gate_pos, 0, Vector2i(0, 0), 1)
 		else:
 			logic_layer.set_cell(gate_pos, 0, Vector2i(0, 0), 0)
-		update_state(gate_pos, state)
+		update_state(gate_pos, not state)
 
 
 func update_state(tile_coords: Vector2i, state: bool) -> void:
-	next_wire_list.append(tile_coords)
+	logic_layer.set_cell(tile_coords, 0, Vector2i(0, 0), state)
 
-	for wire_coord in next_wire_list:
-		logic_layer.set_cell(wire_coord, 0, Vector2i(0, 0), not state)
-
-		var wire_data: TileData = wire_layer.get_cell_tile_data(wire_coord)
-		if wire_data:
-			var next_wire := Vector2i.ZERO
-			if wire_data.get_custom_data("right_direction"):
-				next_wire = wire_coord + Vector2i.RIGHT
-				if not next_wire in next_wire_list:
-					next_wire_list.append(next_wire)
-			if wire_data.get_custom_data("down_direction"):
-				next_wire = wire_coord + Vector2i.DOWN
-				if not next_wire in next_wire_list:
-					next_wire_list.append(next_wire)
-			if wire_data.get_custom_data("left_direction"):
-				next_wire = wire_coord + Vector2i.LEFT
-				if not next_wire in next_wire_list:
-					next_wire_list.append(next_wire)
-			if wire_data.get_custom_data("up_direction"):
-				next_wire = wire_coord + Vector2i.UP
-				if not next_wire in next_wire_list:
-					next_wire_list.append(next_wire)
-
-	next_wire_list.clear()
+	var wire_data: TileData = wire_layer.get_cell_tile_data(tile_coords)
+	if wire_data:
+		var next_wire := Vector2i.ZERO
+		if wire_data.get_custom_data("right_direction"):
+			next_wire = tile_coords + Vector2i.RIGHT
+			if logic_layer.get_cell_tile_data(next_wire).get_custom_data("state") == not state:
+				update_state(next_wire, state)
+		if wire_data.get_custom_data("down_direction"):
+			next_wire = tile_coords + Vector2i.DOWN
+			if logic_layer.get_cell_tile_data(next_wire).get_custom_data("state") == not state:
+				update_state(next_wire, state)
+		if wire_data.get_custom_data("left_direction"):
+			next_wire = tile_coords + Vector2i.LEFT
+			if logic_layer.get_cell_tile_data(next_wire).get_custom_data("state") == not state:
+				update_state(next_wire, state)
+		if wire_data.get_custom_data("up_direction"):
+			next_wire = tile_coords + Vector2i.UP
+			if logic_layer.get_cell_tile_data(next_wire).get_custom_data("state") == not state:
+				update_state(next_wire, state)

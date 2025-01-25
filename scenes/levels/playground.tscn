@@ -1,9 +1,9 @@
 [gd_scene load_steps=8 format=3 uid="uid://vxc7l235kxff"]
 
-[ext_resource type="Script" path="res://scripts/levels/playground.gd" id="1_ywb2o"]
+[ext_resource type="Script" path="res://scenes/levels/playground.gd" id="1_ywb2o"]
 [ext_resource type="TileSet" uid="uid://dhfs68s3itmxi" path="res://assets/resources/tilesets/wire_tileset.tres" id="2_mw4bp"]
 [ext_resource type="Texture2D" uid="uid://cj86b6py6lf00" path="res://icon.svg" id="3_cfd3d"]
-[ext_resource type="Script" path="res://scripts/levels/camera_2d.gd" id="3_dsu8x"]
+[ext_resource type="Script" path="res://scenes/levels/camera_2d.gd" id="3_dsu8x"]
 [ext_resource type="TileSet" uid="uid://boqjjkshra24t" path="res://assets/resources/tilesets/gate_tileset.tres" id="4_myh4h"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qivgt"]

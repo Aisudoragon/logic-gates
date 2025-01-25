@@ -1,6 +1,7 @@
 extends Node2D
 
 var previous_tile: Vector2i
+var next_wire_list: Array[Vector2i]
 @onready var wire_layer: TileMapLayer = $WireLayer
 @onready var gate_layer: TileMapLayer = $GateLayer
 @onready var highlight_layer: TileMapLayer = $HighlightLayer
@@ -41,7 +42,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func update_wire_look(tile_position: Vector2i, new_direction: Vector2i) -> void:
 	var right_direction: bool = false
-	var bottom_direction: bool = false
+	var down_direction: bool = false
 	var left_direction: bool = false
 	var up_direction: bool = false
 
@@ -49,8 +50,8 @@ func update_wire_look(tile_position: Vector2i, new_direction: Vector2i) -> void:
 	if data:
 		if data.get_custom_data("right_direction"):
 			right_direction = true
-		if data.get_custom_data("bottom_direction"):
-			bottom_direction = true
+		if data.get_custom_data("down_direction"):
+			down_direction = true
 		if data.get_custom_data("left_direction"):
 			left_direction = true
 		if data.get_custom_data("up_direction"):
@@ -59,8 +60,8 @@ func update_wire_look(tile_position: Vector2i, new_direction: Vector2i) -> void:
 	if data:
 		if data.get_custom_data("right_direction"):
 			right_direction = true
-		if data.get_custom_data("bottom_direction"):
-			bottom_direction = true
+		if data.get_custom_data("down_direction"):
+			down_direction = true
 		if data.get_custom_data("left_direction"):
 			left_direction = true
 		if data.get_custom_data("up_direction"):
@@ -69,27 +70,27 @@ func update_wire_look(tile_position: Vector2i, new_direction: Vector2i) -> void:
 	if new_direction == Vector2i.RIGHT:
 		right_direction = true
 	elif new_direction == Vector2i.DOWN:
-		bottom_direction = true
+		down_direction = true
 	elif new_direction == Vector2i.LEFT:
 		left_direction = true
 	elif new_direction == Vector2i.UP:
 		up_direction = true
 
 	if right_direction:
-		if bottom_direction:
+		if down_direction:
 			if left_direction:
 				if up_direction:
-					# right, bottom, left, top
+					# right, down, left, top
 					highlight_layer.set_cell(tile_position, 0, Vector2i(4, 0), 0)
 					return
-				# right, bottom, left
+				# right, down, left
 				highlight_layer.set_cell(tile_position, 0, Vector2i(3, 0), 0)
 				return
 			elif up_direction:
-				# right, bottom, top
+				# right, down, top
 				highlight_layer.set_cell(tile_position, 0, Vector2i(3, 0), 3)
 				return
-			# right, bottom
+			# right, down
 			highlight_layer.set_cell(tile_position, 0, Vector2i(2, 0), 0)
 			return
 		elif left_direction:
@@ -107,20 +108,20 @@ func update_wire_look(tile_position: Vector2i, new_direction: Vector2i) -> void:
 		# right
 		highlight_layer.set_cell(tile_position, 0, Vector2i(0, 0), 3)
 		return
-	elif bottom_direction:
+	elif down_direction:
 		if left_direction:
 			if up_direction:
-				# bottom, left, top
+				# down, left, top
 				highlight_layer.set_cell(tile_position, 0, Vector2i(3, 0), 1)
 				return
-			# bottom, left
+			# down, left
 			highlight_layer.set_cell(tile_position, 0, Vector2i(2, 0), 1)
 			return
 		elif up_direction:
-			# bottom, top
+			# down, top
 			highlight_layer.set_cell(tile_position, 0, Vector2i(1, 0), 0)
 			return
-		# bottom
+		# down
 		highlight_layer.set_cell(tile_position, 0, Vector2i(0, 0), 0)
 		return
 	elif left_direction:
@@ -162,7 +163,29 @@ func toogle_start_gate() -> void:
 
 
 func update_state(tile_coords: Vector2i, state: bool) -> void:
-	logic_layer.set_cell(tile_coords, 0, Vector2i(0, 0), not state)
-	var wire_data: TileData = wire_layer.get_cell_tile_data(tile_coords)
-	if wire_data.get_custom_data("right_direction"):
-		update_state(tile_coords + Vector2i.RIGHT, state)
+	next_wire_list.append(tile_coords)
+
+	for wire_coord in next_wire_list:
+		logic_layer.set_cell(wire_coord, 0, Vector2i(0, 0), not state)
+
+		var wire_data: TileData = wire_layer.get_cell_tile_data(wire_coord)
+		if wire_data:
+			var next_wire := Vector2i.ZERO
+			if wire_data.get_custom_data("right_direction"):
+				next_wire = wire_coord + Vector2i.RIGHT
+				if not next_wire in next_wire_list:
+					next_wire_list.append(next_wire)
+			if wire_data.get_custom_data("down_direction"):
+				next_wire = wire_coord + Vector2i.DOWN
+				if not next_wire in next_wire_list:
+					next_wire_list.append(next_wire)
+			if wire_data.get_custom_data("left_direction"):
+				next_wire = wire_coord + Vector2i.LEFT
+				if not next_wire in next_wire_list:
+					next_wire_list.append(next_wire)
+			if wire_data.get_custom_data("up_direction"):
+				next_wire = wire_coord + Vector2i.UP
+				if not next_wire in next_wire_list:
+					next_wire_list.append(next_wire)
+
+	next_wire_list.clear()

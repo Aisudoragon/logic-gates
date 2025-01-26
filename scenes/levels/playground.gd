@@ -44,9 +44,20 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_ENTER):
 		toogle_start_gate()
 	if Input.is_key_pressed(KEY_0):
-		gate_layer.set_cell(mouse_position, 1, Vector2i(1, 1), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.LEFT, 1, Vector2i(0, 1), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.RIGHT, 1, Vector2i(2, 1), 0)
+		gate_layer.set_cell(mouse_position, 1, Vector2i(1, 0), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.LEFT, 1, Vector2i(0, 0), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.RIGHT, 1, Vector2i(2, 0), 0)
+	if Input.is_key_pressed(KEY_9):
+		gate_layer.set_cell(mouse_position + Vector2i.LEFT + Vector2i.UP, 2, Vector2i(0, 0), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.UP, 2, Vector2i(1, 0), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.RIGHT + Vector2i.UP, 2, Vector2i(2, 0), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.LEFT, 2, Vector2i(0, 1), 0)
+		gate_layer.set_cell(mouse_position, 2, Vector2i(1, 1), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.RIGHT, 2, Vector2i(2, 1), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.LEFT + Vector2i.DOWN, 2, Vector2i(0, 2), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.DOWN, 2, Vector2i(1, 2), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.RIGHT + Vector2i.DOWN, 2, Vector2i(2, 2), 0)
+
 
 
 func execute_queue() -> void:
@@ -187,19 +198,48 @@ func update_wire(tile_coords: Vector2i, state: bool) -> void:
 	check_for_wires(tile_coords, state)
 
 
-func evaluate_not(tile_coords: Vector2i) -> void:
-	var state: bool = check_tile_state(tile_coords)
-	order_queue.append(Callable(self, &"update_wire").bind(tile_coords + Vector2i(2, 0), not state))
+func evaluate_gate(tile_coords: Vector2i) -> void:
+	var input_1: bool = check_tile_state(tile_coords)
+	var gate_data: TileData = gate_layer.get_cell_tile_data(tile_coords)
+	if gate_data:
+		var other_coords: Vector2i = gate_data.get_custom_data("other_input_coords")
+		var input_2: bool = check_tile_state(tile_coords + other_coords)
+		var output_coords: Vector2i = tile_coords + gate_data.get_custom_data("output_coords")
+
+		var output: bool
+		# NOT
+		if gate_layer.get_cell_source_id(tile_coords) == 1:
+			output = not input_1
+		# AND
+		elif gate_layer.get_cell_source_id(tile_coords) == 2:
+			output = input_1 and input_2
+		# OR
+		elif gate_layer.get_cell_source_id(tile_coords) == 3:
+			output = input_1 or input_2
+		# NAND
+		elif gate_layer.get_cell_source_id(tile_coords) == 4:
+			output = not (input_1 and input_2)
+		# NOR
+		elif gate_layer.get_cell_source_id(tile_coords) == 5:
+			output = not (input_1 or input_2)
+		# XOR
+		elif gate_layer.get_cell_source_id(tile_coords) == 6:
+			output = (input_1 and not input_2) or (not input_1 and input_2)
+		# XNOR
+		elif gate_layer.get_cell_source_id(tile_coords) == 7:
+			output = true if input_1 == input_2 else false
+
+		order_queue.append(Callable(self, &"update_wire").bind(output_coords, output))
 
 
 func check_for_gate(tile_coords: Vector2i) -> void:
-	if gate_layer.get_cell_source_id(tile_coords) == 0:
-		if gate_layer.get_cell_atlas_coords(tile_coords) == Vector2i(1, 0):
-			var state: bool = check_tile_state(tile_coords)
-			gate_layer.set_cell(tile_coords, 0, Vector2i(1, 0), 2 if state else 1)
-	if gate_layer.get_cell_source_id(tile_coords) == 1:
-		if gate_layer.get_cell_atlas_coords(tile_coords) == Vector2i(0, 1):
-			evaluate_not(tile_coords)
+	if (
+			gate_layer.get_cell_source_id(tile_coords) >= 1
+			and (gate_layer.get_cell_atlas_coords(tile_coords) == Vector2i(0, 0)
+					or gate_layer.get_cell_atlas_coords(tile_coords) == Vector2i(0, 2)
+			)
+	):
+		order_queue.append(Callable(self, &"evaluate_gate").bind(tile_coords))
 
 
 func check_for_wires(tile_coords: Vector2i, state: bool) -> void:

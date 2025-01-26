@@ -43,6 +43,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		logic_layer.set_cell(mouse_position, 0, Vector2i(0, 0))
 	if Input.is_key_pressed(KEY_ENTER):
 		toogle_start_gate()
+	if Input.is_key_pressed(KEY_0):
+		gate_layer.set_cell(mouse_position, 1, Vector2i(1, 1), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.LEFT, 1, Vector2i(0, 1), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.RIGHT, 1, Vector2i(2, 1), 0)
+
+
+func execute_queue() -> void:
+	while order_queue.size() != 0:
+		var do_now: Callable = order_queue.pop_front()
+		if do_now is Callable:
+			do_now.callv([])
 
 
 func update_wire_look(tile_position: Vector2i, new_direction: Vector2i) -> void:
@@ -159,7 +170,7 @@ func copy_highlight_into_layer() -> void:
 func toogle_start_gate() -> void:
 	var gates: Array[Vector2i] = gate_layer.get_used_cells_by_id(0, Vector2i(0, 0))
 	for gate_pos in gates:
-		var tile_state: bool = logic_layer.get_cell_tile_data(gate_pos).get_custom_data("state")
+		var tile_state: bool = check_tile_state(gate_pos)
 		if tile_state == false:
 			logic_layer.set_cell(gate_pos, 0, Vector2i(0, 0), 1)
 		else:
@@ -176,11 +187,19 @@ func update_wire(tile_coords: Vector2i, state: bool) -> void:
 	check_for_wires(tile_coords, state)
 
 
+func evaluate_not(tile_coords: Vector2i) -> void:
+	var state: bool = check_tile_state(tile_coords)
+	order_queue.append(Callable(self, &"update_wire").bind(tile_coords + Vector2i(2, 0), not state))
+
+
 func check_for_gate(tile_coords: Vector2i) -> void:
-	if gate_layer.get_cell_source_id(tile_coords) != -1:
+	if gate_layer.get_cell_source_id(tile_coords) == 0:
 		if gate_layer.get_cell_atlas_coords(tile_coords) == Vector2i(1, 0):
-			var state: bool = logic_layer.get_cell_tile_data(tile_coords).get_custom_data("state")
+			var state: bool = check_tile_state(tile_coords)
 			gate_layer.set_cell(tile_coords, 0, Vector2i(1, 0), 2 if state else 1)
+	if gate_layer.get_cell_source_id(tile_coords) == 1:
+		if gate_layer.get_cell_atlas_coords(tile_coords) == Vector2i(0, 1):
+			evaluate_not(tile_coords)
 
 
 func check_for_wires(tile_coords: Vector2i, state: bool) -> void:
@@ -190,24 +209,24 @@ func check_for_wires(tile_coords: Vector2i, state: bool) -> void:
 		var next_step := Callable(self, &"update_wire")
 		if wire_data.get_custom_data("right_direction"):
 			next_wire = tile_coords + Vector2i.RIGHT
-			if logic_layer.get_cell_tile_data(next_wire).get_custom_data("state") != state:
+			if check_tile_state(next_wire) != state:
 				order_queue.append(next_step.bind(next_wire, state))
 		if wire_data.get_custom_data("down_direction"):
 			next_wire = tile_coords + Vector2i.DOWN
-			if logic_layer.get_cell_tile_data(next_wire).get_custom_data("state") != state:
+			if check_tile_state(next_wire) != state:
 				order_queue.append(next_step.bind(next_wire, state))
 		if wire_data.get_custom_data("left_direction"):
 			next_wire = tile_coords + Vector2i.LEFT
-			if logic_layer.get_cell_tile_data(next_wire).get_custom_data("state") != state:
+			if check_tile_state(next_wire) != state:
 				order_queue.append(next_step.bind(next_wire, state))
 		if wire_data.get_custom_data("up_direction"):
 			next_wire = tile_coords + Vector2i.UP
-			if logic_layer.get_cell_tile_data(next_wire).get_custom_data("state") != state:
+			if check_tile_state(next_wire) != state:
 				order_queue.append(next_step.bind(next_wire, state))
 
 
-func execute_queue() -> void:
-	while order_queue.size() != 0:
-		var do_now: Callable = order_queue.pop_front()
-		if do_now is Callable:
-			do_now.callv([])
+func check_tile_state(tile_pos: Vector2i) -> bool:
+	var logic_data: TileData = logic_layer.get_cell_tile_data(tile_pos)
+	if logic_data:
+		return logic_data.get_custom_data("state")
+	return false

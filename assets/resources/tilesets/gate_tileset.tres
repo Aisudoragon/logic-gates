@@ -1,6 +1,10 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://boqjjkshra24t"]
+[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://boqjjkshra24t"]
 
 [ext_resource type="Texture2D" uid="uid://bn8kqmn3h7yg1" path="res://assets/resources/textures/startstop.png" id="1_bvmjg"]
+[ext_resource type="Texture2D" uid="uid://dvnrtg2waccwe" path="res://assets/resources/textures/logic_gates.png" id="2_3i0wb"]
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_twcfv"]
+tile_data = PackedInt32Array(0, 1, 1, 1, 65537, 1, 2, 131073, 1)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sjw15"]
 texture = ExtResource("1_bvmjg")
@@ -14,6 +18,73 @@ texture_region_size = Vector2i(64, 64)
 1:0/2 = 2
 1:0/2/modulate = Color(0.233333, 1, 0, 1)
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fmlgc"]
+texture = ExtResource("2_3i0wb")
+texture_region_size = Vector2i(64, 64)
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:0/0 = 0
+3:1/0 = 0
+3:2/0 = 0
+4:0/0 = 0
+4:1/0 = 0
+4:2/0 = 0
+5:0/0 = 0
+5:1/0 = 0
+5:2/0 = 0
+6:0/0 = 0
+6:1/0 = 0
+6:2/0 = 0
+7:0/0 = 0
+7:1/0 = 0
+7:2/0 = 0
+8:0/0 = 0
+8:1/0 = 0
+8:2/0 = 0
+9:0/0 = 0
+9:1/0 = 0
+9:2/0 = 0
+10:0/0 = 0
+10:1/0 = 0
+10:2/0 = 0
+11:0/0 = 0
+11:1/0 = 0
+11:2/0 = 0
+12:0/0 = 0
+12:1/0 = 0
+12:2/0 = 0
+13:0/0 = 0
+13:1/0 = 0
+13:2/0 = 0
+14:0/0 = 0
+14:1/0 = 0
+14:2/0 = 0
+15:0/0 = 0
+15:1/0 = 0
+15:2/0 = 0
+16:0/0 = 0
+16:1/0 = 0
+16:2/0 = 0
+17:0/0 = 0
+17:1/0 = 0
+17:2/0 = 0
+18:0/0 = 0
+18:1/0 = 0
+18:2/0 = 0
+19:0/0 = 0
+19:1/0 = 0
+19:2/0 = 0
+20:0/0 = 0
+20:1/0 = 0
+20:2/0 = 0
+
 [resource]
 tile_size = Vector2i(64, 64)
+custom_data_layer_0/name = "output_coords"
+custom_data_layer_0/type = 6
+custom_data_layer_1/name = "other_input_coords"
+custom_data_layer_1/type = 6
 sources/0 = SubResource("TileSetAtlasSource_sjw15")
+sources/1 = SubResource("TileSetAtlasSource_fmlgc")
+pattern_0 = SubResource("TileMapPattern_twcfv")

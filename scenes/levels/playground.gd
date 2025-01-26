@@ -39,7 +39,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		gate_layer.set_cell(mouse_position, 0, Vector2i(0, 0))
 		logic_layer.set_cell(mouse_position, 0, Vector2i(0, 0))
 	if Input.is_key_pressed(KEY_2):
-		gate_layer.set_cell(mouse_position, 0, Vector2i(1, 0), 2)
+		gate_layer.set_cell(mouse_position, 0, Vector2i(1, 0), 1)
 		logic_layer.set_cell(mouse_position, 0, Vector2i(0, 0))
 	if Input.is_key_pressed(KEY_ENTER):
 		toogle_start_gate()
@@ -172,6 +172,18 @@ func toogle_start_gate() -> void:
 func update_wire(tile_coords: Vector2i, state: bool) -> void:
 	logic_layer.set_cell(tile_coords, 0, Vector2i(0, 0), state)
 
+	check_for_gate(tile_coords)
+	check_for_wires(tile_coords, state)
+
+
+func check_for_gate(tile_coords: Vector2i) -> void:
+	if gate_layer.get_cell_source_id(tile_coords) != -1:
+		if gate_layer.get_cell_atlas_coords(tile_coords) == Vector2i(1, 0):
+			var state: bool = logic_layer.get_cell_tile_data(tile_coords).get_custom_data("state")
+			gate_layer.set_cell(tile_coords, 0, Vector2i(1, 0), 2 if state else 1)
+
+
+func check_for_wires(tile_coords: Vector2i, state: bool) -> void:
 	var wire_data: TileData = wire_layer.get_cell_tile_data(tile_coords)
 	if wire_data:
 		var next_wire := Vector2i.ZERO

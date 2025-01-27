@@ -44,20 +44,24 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_ENTER):
 		toogle_start_gate()
 	if Input.is_key_pressed(KEY_0):
-		gate_layer.set_cell(mouse_position, 1, Vector2i(1, 0), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.LEFT, 1, Vector2i(0, 0), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.RIGHT, 1, Vector2i(2, 0), 0)
+		place_gate(mouse_position, 1)
 	if Input.is_key_pressed(KEY_9):
-		gate_layer.set_cell(mouse_position + Vector2i.LEFT + Vector2i.UP, 2, Vector2i(0, 0), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.UP, 2, Vector2i(1, 0), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.RIGHT + Vector2i.UP, 2, Vector2i(2, 0), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.LEFT, 2, Vector2i(0, 1), 0)
-		gate_layer.set_cell(mouse_position, 2, Vector2i(1, 1), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.RIGHT, 2, Vector2i(2, 1), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.LEFT + Vector2i.DOWN, 2, Vector2i(0, 2), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.DOWN, 2, Vector2i(1, 2), 0)
-		gate_layer.set_cell(mouse_position + Vector2i.RIGHT + Vector2i.DOWN, 2, Vector2i(2, 2), 0)
+		place_gate(mouse_position, 2)
 
+
+func place_gate(mouse_position: Vector2i, source: int) -> void:
+	if source == 1:
+		mouse_position += Vector2i.DOWN
+	gate_layer.set_cell(mouse_position + Vector2i.UP + Vector2i.LEFT, source, Vector2i(0, 0), 0)
+	gate_layer.set_cell(mouse_position + Vector2i.UP, source, Vector2i(1, 0), 0)
+	gate_layer.set_cell(mouse_position + Vector2i.UP + Vector2i.RIGHT, source, Vector2i(2, 0), 0)
+	if source >= 2:
+		gate_layer.set_cell(mouse_position + Vector2i.LEFT, source, Vector2i(0, 1), 0)
+		gate_layer.set_cell(mouse_position, source, Vector2i(1, 1), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.RIGHT, source, Vector2i(2, 1), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.DOWN + Vector2i.LEFT, source, Vector2i(0, 2), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.DOWN, source, Vector2i(1, 2), 0)
+		gate_layer.set_cell(mouse_position + Vector2i.DOWN + Vector2i.RIGHT, source, Vector2i(2, 2), 0)
 
 
 func execute_queue() -> void:

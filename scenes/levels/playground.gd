@@ -104,7 +104,9 @@ func place_gate(mouse_position: Vector2i, source: int) -> void:
 
 
 func execute_queue() -> void:
-	while order_queue.size() != 0:
+	for i in range(500):
+		if order_queue.size() == 0:
+			return
 		var do_now: Callable = order_queue.pop_front()
 		if do_now is Callable:
 			do_now.callv([])

@@ -20,6 +20,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed(&"place"):
 		previous_tile = mouse_position
+	if event.is_action_pressed(&"destroy"):
+		logic_layer.set_cell(mouse_position)
+		wire_layer.set_cell(mouse_position)
+		logic_layer_2.set_cell(mouse_position)
+		wire_layer_2.set_cell(mouse_position)
+		gate_layer.set_cell(mouse_position)
 	elif event.is_action_released(&"place"):
 		if Input.is_key_pressed(KEY_SHIFT):
 			copy_highlight_into_layer(wire_layer_2)

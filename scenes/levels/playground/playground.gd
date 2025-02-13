@@ -31,6 +31,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if Input.is_action_pressed(&"place"):
 			active_layer.highlight_wire(mouse_position)
+		else:
+			active_layer.highlight_point(mouse_position)
 		if Input.is_action_pressed(&"destroy"):
 			active_layer.delete_wire(mouse_position)
 

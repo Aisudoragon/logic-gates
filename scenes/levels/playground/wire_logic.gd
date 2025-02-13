@@ -25,6 +25,11 @@ func rotate_checkpoint() -> void:
 	rotated = not rotated
 
 
+func highlight_point(mouse_position: Vector2i) -> void:
+	highlight_layer.clear()
+	highlight_layer.set_cell(mouse_position, 0, Vector2i(5, 0), 0)
+
+
 func highlight_wire(mouse_position: Vector2i) -> void:
 	highlight_layer.clear()
 
@@ -159,11 +164,16 @@ func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i, add: boo
 		# top
 		highlight_layer.set_cell(tile_position, 0, Vector2i(0, 0), 2)
 		return
-	highlight_layer.set_cell(tile_position, -1)
 	wire_layer.set_cell(tile_position, -1)
+	logic_layer.set_cell(tile_position, -1)
 
 
 func draw_wire() -> void:
+	if not buffer_position.is_empty():
+		if buffer_position[0] == buffer_position[1]:
+			buffer_position.clear()
+			return
+
 	var all_tiles: Array[Vector2i] = highlight_layer.get_used_cells()
 
 	for coordinates in all_tiles:
@@ -171,13 +181,17 @@ func draw_wire() -> void:
 		var alternative: int = highlight_layer.get_cell_alternative_tile(coordinates)
 
 		wire_layer.set_cell(coordinates, 0, atlas_coords, alternative)
+		logic_layer.set_cell(coordinates, 0, Vector2i(0, 0), 0)
 
 	buffer_position.clear()
 	highlight_layer.clear()
 
 
+
 func delete_wire(delete_position: Vector2i) -> void:
+	highlight_layer.clear()
 	wire_layer.set_cell(delete_position, -1)
+	logic_layer.set_cell(delete_position, -1)
 
 	for neighbor in wire_layer.get_surrounding_cells(delete_position):
 		var direction: Vector2i = delete_position - neighbor
@@ -185,3 +199,4 @@ func delete_wire(delete_position: Vector2i) -> void:
 		update_wire_tile(neighbor, direction, false)
 
 	draw_wire()
+	highlight_point(delete_position)

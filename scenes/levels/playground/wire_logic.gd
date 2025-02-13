@@ -159,8 +159,8 @@ func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i, add: boo
 		# top
 		highlight_layer.set_cell(tile_position, 0, Vector2i(0, 0), 2)
 		return
-	#highlight_layer.set_cell(tile_position, 0, Vector2i(5, 0), 0)
 	highlight_layer.set_cell(tile_position, -1)
+	wire_layer.set_cell(tile_position, -1)
 
 
 func draw_wire() -> void:

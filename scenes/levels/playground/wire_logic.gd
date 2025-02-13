@@ -41,14 +41,31 @@ func highlight_wire(mouse_position: Vector2i) -> void:
 		var direction := Vector2i(ending_position - starting_position).sign()
 
 		if direction.y != 0:
-			for position_y in range(starting_position.y, ending_position.y + direction.y, direction.y):
-				update_wire_tile(Vector2i(starting_position.x, position_y), direction)
+			highlight_line(starting_position, Vector2i(starting_position.x, ending_position.y))
+
+			#for position_y in range(starting_position.y, ending_position.y + direction.y, direction.y):
+				#update_wire_tile(Vector2i(starting_position.x, position_y), direction)
 				# TODO - Wykonać aby kable w jednej osi się łączyły może? A potem do następnej osi
 				# po prostu połączy osobno?
 				#highlight_layer.set_cell(Vector2i(starting_position.x, position_y), 0, Vector2i(4, 0), 0)
 		if direction.x != 0:
-			for position_x in range(starting_position.x, ending_position.x + direction.x, direction.x):
-				highlight_layer.set_cell(Vector2i(position_x, ending_position.y), 0, Vector2i(4, 0), 0)
+			highlight_line(Vector2i(starting_position.x, ending_position.y), ending_position)
+
+			#for position_x in range(starting_position.x, ending_position.x + direction.x, direction.x):
+				#highlight_layer.set_cell(Vector2i(position_x, ending_position.y), 0, Vector2i(4, 0), 0)
+
+
+func highlight_line(starting_position: Vector2i, ending_position: Vector2i) -> void:
+	var direction: Vector2i = (ending_position - starting_position).sign()
+
+	if direction.x:
+		for buffer_position in range(starting_position.x, ending_position.x + direction.x, direction.x):
+			update_wire_tile(Vector2i(buffer_position, starting_position.y), direction)
+			update_wire_tile(Vector2i(buffer_position, starting_position.y), -direction)
+	else:
+		for buffer_position in range(starting_position.y, ending_position.y + direction.y, direction.y):
+			update_wire_tile(Vector2i(starting_position.x, buffer_position), direction)
+			update_wire_tile(Vector2i(starting_position.x, buffer_position), -direction)
 
 
 func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i) -> void:

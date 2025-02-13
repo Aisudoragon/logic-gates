@@ -52,18 +52,18 @@ func highlight_line(starting_position: Vector2i, ending_position: Vector2i) -> v
 	if direction.x:
 		for variable_position in range(starting_position.x, ending_position.x + direction.x, direction.x):
 			if variable_position != starting_position.x:
-				update_wire_tile(Vector2i(variable_position, starting_position.y), -direction)
+				update_wire_tile(Vector2i(variable_position, starting_position.y), -direction, true)
 			if variable_position != ending_position.x:
-				update_wire_tile(Vector2i(variable_position, starting_position.y), direction)
+				update_wire_tile(Vector2i(variable_position, starting_position.y), direction, true)
 	else:
 		for variable_position in range(starting_position.y, ending_position.y + direction.y, direction.y):
 			if variable_position != starting_position.y:
-				update_wire_tile(Vector2i(starting_position.x, variable_position), -direction)
+				update_wire_tile(Vector2i(starting_position.x, variable_position), -direction, true)
 			if variable_position != ending_position.y:
-				update_wire_tile(Vector2i(starting_position.x, variable_position), direction)
+				update_wire_tile(Vector2i(starting_position.x, variable_position), direction, true)
 
 
-func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i) -> void:
+func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i, add: bool) -> void:
 	var right_direction: bool = false
 	var down_direction: bool = false
 	var left_direction: bool = false
@@ -91,13 +91,13 @@ func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i) -> void:
 			up_direction = true
 
 	if new_direction == Vector2i.RIGHT:
-		right_direction = true
+		right_direction = add
 	elif new_direction == Vector2i.DOWN:
-		down_direction = true
+		down_direction = add
 	elif new_direction == Vector2i.LEFT:
-		left_direction = true
+		left_direction = add
 	elif new_direction == Vector2i.UP:
-		up_direction = true
+		up_direction = add
 
 	if right_direction:
 		if down_direction:
@@ -159,8 +159,29 @@ func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i) -> void:
 		# top
 		highlight_layer.set_cell(tile_position, 0, Vector2i(0, 0), 2)
 		return
-	highlight_layer.set_cell(tile_position, 0, Vector2i(5, 0), 0)
+	#highlight_layer.set_cell(tile_position, 0, Vector2i(5, 0), 0)
+	highlight_layer.set_cell(tile_position, -1)
 
 
 func draw_wire() -> void:
+	var all_tiles: Array[Vector2i] = highlight_layer.get_used_cells()
+
+	for coordinates in all_tiles:
+		var atlas_coords: Vector2i = highlight_layer.get_cell_atlas_coords(coordinates)
+		var alternative: int = highlight_layer.get_cell_alternative_tile(coordinates)
+
+		wire_layer.set_cell(coordinates, 0, atlas_coords, alternative)
+
 	buffer_position.clear()
+	highlight_layer.clear()
+
+
+func delete_wire(delete_position: Vector2i) -> void:
+	wire_layer.set_cell(delete_position, -1)
+
+	for neighbor in wire_layer.get_surrounding_cells(delete_position):
+		var direction: Vector2i = delete_position - neighbor
+
+		update_wire_tile(neighbor, direction, false)
+
+	draw_wire()

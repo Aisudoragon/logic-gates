@@ -2,14 +2,8 @@ extends Node2D
 
 @export var wire_layers: Array[WireLogic]
 var active_layer: WireLogic
-#var previous_tile: Vector2i
 var order_queue: Array[Callable]
-#@onready var logic_layer: TileMapLayer = $LogicLayer
-#@onready var wire_layer: TileMapLayer = $WireLayer
-#@onready var logic_layer_2: TileMapLayer = $LogicLayer2
-#@onready var wire_layer_2: TileMapLayer = $WireLayer2
 @onready var gate_layer: TileMapLayer = $GateLayer
-#@onready var highlight_layer: TileMapLayer = $HighlightLayer
 
 
 func _ready() -> void:
@@ -31,10 +25,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		active_layer.highlight_wire(mouse_position)
 	if event.is_action_released(&"place"):
 		active_layer.draw_wire()
+	if event.is_action_pressed(&"destroy"):
+		active_layer.delete_wire(mouse_position)
 
 	if event is InputEventMouseMotion:
 		if Input.is_action_pressed(&"place"):
 			active_layer.highlight_wire(mouse_position)
+		if Input.is_action_pressed(&"destroy"):
+			active_layer.delete_wire(mouse_position)
 
 
 	#if event.is_action_pressed(&"place"):
@@ -137,16 +135,6 @@ func execute_queue() -> void:
 		#gate_layer.set_cell(mouse_position + Vector2i.DOWN + Vector2i.RIGHT, source, Vector2i(2, 2), 0)
 
 
-#func copy_highlight_into_layer(wire: TileMapLayer) -> void:
-	#var all_tiles: Array[Vector2i] = highlight_layer.get_used_cells()
-#
-	#for coordinates in all_tiles:
-		#var atlas_coords: Vector2i = highlight_layer.get_cell_atlas_coords(coordinates)
-		#var alternative: int = highlight_layer.get_cell_alternative_tile(coordinates)
-#
-		#wire.set_cell(coordinates, 0, atlas_coords, alternative)
-#
-#
 #func toogle_start_gates() -> void:
 	#var gates: Array[Vector2i] = gate_layer.get_used_cells_by_id(0, Vector2i(0, 0))
 	#for gate_pos in gates:

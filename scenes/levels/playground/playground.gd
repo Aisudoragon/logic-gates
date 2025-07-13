@@ -11,7 +11,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if order_queue.size() != 0:
+	if not order_queue.is_empty():
 		execute_queue()
 
 
@@ -112,7 +112,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func execute_queue() -> void:
 	for i in range(1500):
-		if order_queue.size() == 0:
+		if order_queue.is_empty():
 			return
 		var do_now: Callable = order_queue.pop_front()
 		if do_now is Callable:

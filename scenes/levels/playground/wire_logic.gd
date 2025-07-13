@@ -17,8 +17,7 @@ func add_checkpoint(mouse_position: Vector2i) -> void:
 
 
 func rotate_checkpoint() -> void:
-	var buff: Vector2i
-	buff = buffer_position[-1]
+	var buff: Vector2i = buffer_position[-1]
 	buffer_position[-1] = buffer_position[-2]
 	buffer_position[-2] = buff
 
@@ -45,9 +44,9 @@ func highlight_wire(mouse_position: Vector2i) -> void:
 
 		var direction := Vector2i(ending_position - starting_position).sign()
 
-		if direction.y != 0:
+		if direction.y:
 			highlight_line(starting_position, Vector2i(starting_position.x, ending_position.y))
-		if direction.x != 0:
+		if direction.x:
 			highlight_line(Vector2i(starting_position.x, ending_position.y), ending_position)
 
 
@@ -57,18 +56,18 @@ func highlight_line(starting_position: Vector2i, ending_position: Vector2i) -> v
 	if direction.x:
 		for variable_position in range(starting_position.x, ending_position.x + direction.x, direction.x):
 			if variable_position != starting_position.x:
-				update_wire_tile(Vector2i(variable_position, starting_position.y), -direction, true)
+				update_wire_tile(Vector2i(variable_position, starting_position.y), -direction)
 			if variable_position != ending_position.x:
-				update_wire_tile(Vector2i(variable_position, starting_position.y), direction, true)
+				update_wire_tile(Vector2i(variable_position, starting_position.y), direction)
 	else:
 		for variable_position in range(starting_position.y, ending_position.y + direction.y, direction.y):
 			if variable_position != starting_position.y:
-				update_wire_tile(Vector2i(starting_position.x, variable_position), -direction, true)
+				update_wire_tile(Vector2i(starting_position.x, variable_position), -direction)
 			if variable_position != ending_position.y:
-				update_wire_tile(Vector2i(starting_position.x, variable_position), direction, true)
+				update_wire_tile(Vector2i(starting_position.x, variable_position), direction)
 
 
-func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i, add: bool) -> void:
+func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i, add: bool = true) -> void:
 	var right_direction: bool = false
 	var down_direction: bool = false
 	var left_direction: bool = false
@@ -185,7 +184,6 @@ func draw_wire() -> void:
 
 	buffer_position.clear()
 	highlight_layer.clear()
-
 
 
 func delete_wire(delete_position: Vector2i) -> void:

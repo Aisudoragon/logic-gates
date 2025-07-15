@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://ba0bl16fuws1s"]
+
+[ext_resource type="Texture2D" uid="uid://fhjnqem02rdj" path="res://assets/resources/textures/cursor.png" id="1_q7lvh"]
+[ext_resource type="Texture2D" uid="uid://mlshv5b0su4p" path="res://assets/resources/textures/wire_icon.png" id="2_4grtn"]
+
+[node name="EditorInterface" type="CanvasLayer"]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+alignment = 1
+
+[node name="SelectThings" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "SELECT"
+icon = ExtResource("1_q7lvh")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="DrawWire" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "WIRE"
+icon = ExtResource("2_4grtn")
+icon_alignment = 1
+vertical_icon_alignment = 0

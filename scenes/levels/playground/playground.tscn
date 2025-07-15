@@ -103,4 +103,4 @@ text = "START"
 layout_mode = 2
 text = "END"
 
-[node name="HUD" parent="." instance=ExtResource("7_dhyt4")]
+[node name="EditorInterface" parent="." instance=ExtResource("7_dhyt4")]

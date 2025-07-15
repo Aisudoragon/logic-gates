@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://vxc7l235kxff"]
+[gd_scene load_steps=10 format=3 uid="uid://vxc7l235kxff"]
 
 [ext_resource type="Script" uid="uid://ddrbmlbq6sk85" path="res://scenes/levels/playground/playground.gd" id="1_ywb2o"]
 [ext_resource type="TileSet" uid="uid://dhfs68s3itmxi" path="res://assets/resources/tilesets/wire_tileset.tres" id="2_mw4bp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://iua6lifhsyfb" path="res://scenes/levels/playground/camera_2d.gd" id="3_dsu8x"]
 [ext_resource type="Script" uid="uid://w6dok6yxgi4x" path="res://scenes/levels/playground/wire_logic.gd" id="4_kqs0i"]
 [ext_resource type="TileSet" uid="uid://boqjjkshra24t" path="res://assets/resources/tilesets/gate_tileset.tres" id="4_myh4h"]
+[ext_resource type="PackedScene" uid="uid://ba0bl16fuws1s" path="res://scenes/interfaces/hud.tscn" id="7_dhyt4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qivgt"]
 texture = ExtResource("3_cfd3d")
@@ -101,3 +102,5 @@ text = "START"
 [node name="Button3" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
 layout_mode = 2
 text = "END"
+
+[node name="HUD" parent="." instance=ExtResource("7_dhyt4")]

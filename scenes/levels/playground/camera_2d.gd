@@ -12,7 +12,7 @@ func _process(delta: float) -> void:
 	position += camera_speed * direction / zoom * delta
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var event_mb: InputEventMouseButton = event
 		if event_mb.button_index == MOUSE_BUTTON_WHEEL_UP:

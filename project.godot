@@ -45,7 +45,8 @@ movie_writer/movie_file="/var/home/aisudoragon/Godot/logic_gates/movie.avi"
 
 folder_colors={
 "res://assets/": "gray",
-"res://scenes/": "green"
+"res://scenes/": "green",
+"res://scripts/": "blue"
 }
 
 [input]

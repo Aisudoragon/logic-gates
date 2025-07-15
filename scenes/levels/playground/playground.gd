@@ -239,3 +239,7 @@ func execute_queue() -> void:
 	#if logic_data:
 		#return logic_data.get_custom_data("state")
 	#return false
+
+
+func _on_editor_interface_mode_selected(mode: EditorMode.Selected) -> void:
+	print(mode)

@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://ba0bl16fuws1s"]
+[gd_scene load_steps=4 format=3 uid="uid://ba0bl16fuws1s"]
 
+[ext_resource type="Script" uid="uid://csitk4tag8uya" path="res://scenes/interfaces/editor_interface.gd" id="1_ayhpq"]
 [ext_resource type="Texture2D" uid="uid://fhjnqem02rdj" path="res://assets/resources/textures/cursor.png" id="1_q7lvh"]
 [ext_resource type="Texture2D" uid="uid://mlshv5b0su4p" path="res://assets/resources/textures/wire_icon.png" id="2_4grtn"]
 
 [node name="EditorInterface" type="CanvasLayer"]
+script = ExtResource("1_ayhpq")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchors_preset = 12
@@ -29,3 +31,6 @@ text = "WIRE"
 icon = ExtResource("2_4grtn")
 icon_alignment = 1
 vertical_icon_alignment = 0
+
+[connection signal="pressed" from="HBoxContainer/SelectThings" to="." method="_on_select_things_pressed"]
+[connection signal="pressed" from="HBoxContainer/DrawWire" to="." method="_on_draw_wire_pressed"]

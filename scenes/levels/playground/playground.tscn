@@ -104,3 +104,5 @@ layout_mode = 2
 text = "END"
 
 [node name="EditorInterface" parent="." instance=ExtResource("7_dhyt4")]
+
+[connection signal="mode_selected" from="EditorInterface" to="." method="_on_editor_interface_mode_selected"]

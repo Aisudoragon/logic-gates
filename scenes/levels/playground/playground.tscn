@@ -24,35 +24,22 @@ custom_data_layer_0/name = "state"
 custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_qivgt")
 
-[node name="Playground" type="Node2D" node_paths=PackedStringArray("wire_layers")]
+[node name="Playground" type="Node2D"]
 script = ExtResource("1_ywb2o")
-wire_layers = [NodePath("WhiteLayer")]
 
-[node name="LogicLayer2" type="TileMapLayer" parent="."]
-self_modulate = Color(1, 1, 1, 0.25)
-position = Vector2(10, 10)
-tile_set = SubResource("TileSet_1jhvd")
-
-[node name="WireLayer2" type="TileMapLayer" parent="."]
-self_modulate = Color(0.3, 0.79, 1, 1)
-position = Vector2(10, 10)
-tile_set = ExtResource("2_mw4bp")
-collision_enabled = false
-navigation_enabled = false
-
-[node name="WhiteLayer" type="Node2D" parent="."]
+[node name="Wires" type="Node2D" parent="."]
 script = ExtResource("4_kqs0i")
 
-[node name="LogicLayer" type="TileMapLayer" parent="WhiteLayer"]
+[node name="LogicLayer" type="TileMapLayer" parent="Wires"]
 self_modulate = Color(1, 1, 1, 0.25)
 tile_set = SubResource("TileSet_1jhvd")
 
-[node name="WireLayer" type="TileMapLayer" parent="WhiteLayer"]
+[node name="WireLayer" type="TileMapLayer" parent="Wires"]
 tile_set = ExtResource("2_mw4bp")
 collision_enabled = false
 navigation_enabled = false
 
-[node name="HighlightLayer" type="TileMapLayer" parent="WhiteLayer"]
+[node name="HighlightLayer" type="TileMapLayer" parent="Wires"]
 self_modulate = Color(1, 1, 1, 0.521569)
 tile_set = ExtResource("2_mw4bp")
 collision_enabled = false
@@ -64,44 +51,6 @@ tile_set = ExtResource("4_myh4h")
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 script = ExtResource("3_dsu8x")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -33.0
-offset_right = 56.0
-offset_bottom = 33.0
-grow_vertical = 2
-mouse_filter = 0
-alignment = 1
-
-[node name="Button4" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
-layout_mode = 2
-text = "SELECT"
-
-[node name="Button" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
-layout_mode = 2
-text = "WIRE"
-
-[node name="Button2" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
-layout_mode = 2
-text = "START"
-
-[node name="Button3" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
-layout_mode = 2
-text = "END"
 
 [node name="EditorInterface" parent="." instance=ExtResource("7_dhyt4")]
 

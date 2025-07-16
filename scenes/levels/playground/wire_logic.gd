@@ -1,5 +1,4 @@
-class_name WireLogic
-extends Node2D
+class_name Wires extends Node2D
 
 var buffer_position: Array[Vector2i]
 var rotated: bool = false

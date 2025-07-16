@@ -1,13 +1,9 @@
 extends Node2D
 
-@export var wire_layers: Array[WireLogic]
-var active_layer: WireLogic
 var order_queue: Array[Callable]
+var mode_selected: EditorMode.Selected = EditorMode.Selected.SELECT
 @onready var gate_layer: TileMapLayer = $GateLayer
-
-
-func _ready() -> void:
-	active_layer = wire_layers[0]
+@onready var wires_tilemap: Wires = $Wires
 
 
 func _process(_delta: float) -> void:
@@ -19,22 +15,22 @@ func _unhandled_input(event: InputEvent) -> void:
 	var mouse_position: Vector2i = gate_layer.local_to_map(get_local_mouse_position())
 
 	if event.is_action_pressed(&"place") or event.is_action_pressed(&"special"):
-		active_layer.add_checkpoint(mouse_position)
+		wires_tilemap.add_checkpoint(mouse_position)
 	if event.is_action_pressed(&"rotate"):
-		active_layer.rotate_checkpoint()
-		active_layer.highlight_wire(mouse_position)
+		wires_tilemap.rotate_checkpoint()
+		wires_tilemap.highlight_wire(mouse_position)
 	if event.is_action_released(&"place"):
-		active_layer.draw_wire()
+		wires_tilemap.draw_wire()
 	if event.is_action_pressed(&"destroy"):
-		active_layer.delete_wire(mouse_position)
+		wires_tilemap.delete_wire(mouse_position)
 
 	if event is InputEventMouseMotion:
 		if Input.is_action_pressed(&"place"):
-			active_layer.highlight_wire(mouse_position)
+			wires_tilemap.highlight_wire(mouse_position)
 		else:
-			active_layer.highlight_point(mouse_position)
+			wires_tilemap.highlight_point(mouse_position)
 		if Input.is_action_pressed(&"destroy"):
-			active_layer.delete_wire(mouse_position)
+			wires_tilemap.delete_wire(mouse_position)
 
 
 	#if event.is_action_pressed(&"place"):
@@ -202,7 +198,6 @@ func execute_queue() -> void:
 		#order_queue.append(Callable(self, &"evaluate_gate").bind(tile_coords))
 #
 #
-## TODO dodać możliwość kontynuowania kable z zakończenia a nie tylko jak docelowo jest zakończenie
 #func check_for_wires(tile_coords: Vector2i, state: bool, wire: TileMapLayer,
 		#logic:  TileMapLayer) -> void:
 	#var next_step := Callable(self, &"update_wire")
@@ -242,4 +237,4 @@ func execute_queue() -> void:
 
 
 func _on_editor_interface_mode_selected(mode: EditorMode.Selected) -> void:
-	print(mode)
+	mode_selected = mode

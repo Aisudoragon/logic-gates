@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://ba0bl16fuws1s"]
+[gd_scene load_steps=12 format=3 uid="uid://ba0bl16fuws1s"]
 
 [ext_resource type="Script" uid="uid://csitk4tag8uya" path="res://scenes/interfaces/editor_interface.gd" id="1_ayhpq"]
 [ext_resource type="Texture2D" uid="uid://fhjnqem02rdj" path="res://assets/resources/textures/cursor.png" id="1_q7lvh"]
 [ext_resource type="Texture2D" uid="uid://mlshv5b0su4p" path="res://assets/resources/textures/wire_icon.png" id="2_4grtn"]
+[ext_resource type="Texture2D" uid="uid://bn8kqmn3h7yg1" path="res://assets/resources/textures/startstop.png" id="4_ngnnj"]
+[ext_resource type="Texture2D" uid="uid://dqu2giric734j" path="res://assets/resources/textures/gates/not_gate.png" id="5_wa0ej"]
+[ext_resource type="Texture2D" uid="uid://cm8d2wqkbw8k4" path="res://assets/resources/textures/gates/and_gate.png" id="6_0w0iy"]
+[ext_resource type="Texture2D" uid="uid://bs2wxo5wart8s" path="res://assets/resources/textures/gates/nand_gate.png" id="7_2lufr"]
+[ext_resource type="Texture2D" uid="uid://5lxq8mfmvj58" path="res://assets/resources/textures/gates/or_gate.png" id="8_rip62"]
+[ext_resource type="Texture2D" uid="uid://bpv830oqtui6i" path="res://assets/resources/textures/gates/nor_gate.png" id="9_4jvg5"]
+[ext_resource type="Texture2D" uid="uid://ddfq6xx07qih5" path="res://assets/resources/textures/gates/xor_gate.png" id="10_3xggy"]
+[ext_resource type="Texture2D" uid="uid://bw6dcg6rj4l22" path="res://assets/resources/textures/gates/xnor_gate.png" id="11_7acij"]
 
 [node name="EditorInterface" type="CanvasLayer"]
 script = ExtResource("1_ayhpq")
@@ -12,6 +20,7 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -138.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -32,5 +41,69 @@ icon = ExtResource("2_4grtn")
 icon_alignment = 1
 vertical_icon_alignment = 0
 
+[node name="PlaceStartEnd" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "START END"
+icon = ExtResource("4_ngnnj")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="PlaceNot" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "NOT"
+icon = ExtResource("5_wa0ej")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="PlaceAnd" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "AND"
+icon = ExtResource("6_0w0iy")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="PlaceNand" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "NAND"
+icon = ExtResource("7_2lufr")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="PlaceOr" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "OR"
+icon = ExtResource("8_rip62")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="PlaceNor" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "NOR"
+icon = ExtResource("9_4jvg5")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="PlaceXor" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "XOR"
+icon = ExtResource("10_3xggy")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="PlaceXnor" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "XNOR"
+icon = ExtResource("11_7acij")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
 [connection signal="pressed" from="HBoxContainer/SelectThings" to="." method="_on_select_things_pressed"]
 [connection signal="pressed" from="HBoxContainer/DrawWire" to="." method="_on_draw_wire_pressed"]
+[connection signal="pressed" from="HBoxContainer/PlaceStartEnd" to="." method="_on_place_start_end_pressed"]
+[connection signal="pressed" from="HBoxContainer/PlaceNot" to="." method="_on_place_not_pressed"]
+[connection signal="pressed" from="HBoxContainer/PlaceAnd" to="." method="_on_place_and_pressed"]
+[connection signal="pressed" from="HBoxContainer/PlaceNand" to="." method="_on_place_nand_pressed"]
+[connection signal="pressed" from="HBoxContainer/PlaceOr" to="." method="_on_place_or_pressed"]
+[connection signal="pressed" from="HBoxContainer/PlaceNor" to="." method="_on_place_nor_pressed"]
+[connection signal="pressed" from="HBoxContainer/PlaceXor" to="." method="_on_place_xor_pressed"]
+[connection signal="pressed" from="HBoxContainer/PlaceXnor" to="." method="_on_place_xnor_pressed"]

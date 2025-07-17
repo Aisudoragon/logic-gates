@@ -1,36 +1,38 @@
 extends Node2D
 
-var order_queue: Array[Callable]
 var mode_selected: EditorMode.Selected = EditorMode.Selected.SELECT
-@onready var gate_layer: TileMapLayer = $GateLayer
-@onready var wires_tilemap: Wires = $Wires
-
-
-func _process(_delta: float) -> void:
-	if not order_queue.is_empty():
-		execute_queue()
+@onready var wires: Wires = $Wires
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	var mouse_position: Vector2i = gate_layer.local_to_map(get_local_mouse_position())
+	match mode_selected:
+		EditorMode.Selected.SELECT:
+			if event.is_action_pressed(&"place"):
+				wires.toggle_start_gate()
+		EditorMode.Selected.WIRE:
+			if event.is_action_pressed(&"place") or event.is_action_pressed(&"special"):
+				wires.add_checkpoint()
+			if event.is_action_pressed(&"rotate"):
+				wires.rotate_checkpoint()
+				wires.highlight_wire()
+			if event.is_action_released(&"place"):
+				wires.draw_wire()
+			if event.is_action_pressed(&"destroy"):
+				wires.delete_wire()
 
-	if event.is_action_pressed(&"place") or event.is_action_pressed(&"special"):
-		wires_tilemap.add_checkpoint(mouse_position)
-	if event.is_action_pressed(&"rotate"):
-		wires_tilemap.rotate_checkpoint()
-		wires_tilemap.highlight_wire(mouse_position)
-	if event.is_action_released(&"place"):
-		wires_tilemap.draw_wire()
-	if event.is_action_pressed(&"destroy"):
-		wires_tilemap.delete_wire(mouse_position)
-
-	if event is InputEventMouseMotion:
-		if Input.is_action_pressed(&"place"):
-			wires_tilemap.highlight_wire(mouse_position)
-		else:
-			wires_tilemap.highlight_point(mouse_position)
-		if Input.is_action_pressed(&"destroy"):
-			wires_tilemap.delete_wire(mouse_position)
+			if event is InputEventMouseMotion:
+				if Input.is_action_pressed(&"place"):
+					wires.highlight_wire()
+				else:
+					wires.highlight_point()
+				if Input.is_action_pressed(&"destroy"):
+					wires.delete_wire()
+		_:
+			if event.is_action_pressed(&"place"):
+				wires.place_gate(mode_selected)
+			
+			if event is InputEventMouseMotion:
+				wires.highlight_gate()
 
 
 	#if event.is_action_pressed(&"place"):
@@ -104,136 +106,6 @@ func _unhandled_input(event: InputEvent) -> void:
 #
 		#order_queue.append(Callable(self, &"update_wire").bind(mouse_position, not tile_state,
 				#wire_layer, logic_layer))
-
-
-func execute_queue() -> void:
-	for i in range(1500):
-		if order_queue.is_empty():
-			return
-		var do_now: Callable = order_queue.pop_front()
-		if do_now is Callable:
-			do_now.callv([])
-
-
-#func place_gate(mouse_position: Vector2i, source: int) -> void:
-	#wire_layer.set_cell(mouse_position + Vector2i.RIGHT, 0, Vector2i(0, 0), 3)
-	#wire_layer.set_cell(mouse_position + (Vector2i.RIGHT * 2), 0, Vector2i(0, 0), 1)
-#
-	#if source == 1:
-		#mouse_position += Vector2i.DOWN
-	#gate_layer.set_cell(mouse_position + Vector2i.UP + Vector2i.LEFT, source, Vector2i(0, 0), 0)
-	#gate_layer.set_cell(mouse_position + Vector2i.UP, source, Vector2i(1, 0), 0)
-	#gate_layer.set_cell(mouse_position + Vector2i.UP + Vector2i.RIGHT, source, Vector2i(2, 0), 0)
-	#if source >= 2:
-		#gate_layer.set_cell(mouse_position + Vector2i.LEFT, source, Vector2i(0, 1), 0)
-		#gate_layer.set_cell(mouse_position, source, Vector2i(1, 1), 0)
-		#gate_layer.set_cell(mouse_position + Vector2i.RIGHT, source, Vector2i(2, 1), 0)
-		#gate_layer.set_cell(mouse_position + Vector2i.DOWN + Vector2i.LEFT, source, Vector2i(0, 2), 0)
-		#gate_layer.set_cell(mouse_position + Vector2i.DOWN, source, Vector2i(1, 2), 0)
-		#gate_layer.set_cell(mouse_position + Vector2i.DOWN + Vector2i.RIGHT, source, Vector2i(2, 2), 0)
-
-
-#func toogle_start_gates() -> void:
-	#var gates: Array[Vector2i] = gate_layer.get_used_cells_by_id(0, Vector2i(0, 0))
-	#for gate_pos in gates:
-		#var tile_state: bool = check_tile_state(gate_pos, logic_layer)
-		#if tile_state == false:
-			#logic_layer.set_cell(gate_pos, 0, Vector2i(0, 0), 1)
-		#else:
-			#logic_layer.set_cell(gate_pos, 0, Vector2i(0, 0), 0)
-#
-		#order_queue.append(Callable(self, &"update_wire").bind(gate_pos, not tile_state, wire_layer,
-				#logic_layer))
-#
-#
-#func update_wire(tile_coords: Vector2i, state: bool, wire: TileMapLayer, logic: TileMapLayer) -> void:
-	#logic.set_cell(tile_coords, 0, Vector2i(0, 0), state)
-#
-	#check_for_gate(tile_coords)
-	#check_for_wires(tile_coords, state, wire, logic)
-#
-#
-#func evaluate_gate(tile_coords: Vector2i) -> void:
-	#var input_1: bool = check_tile_state(tile_coords, logic_layer)
-	#var gate_data: TileData = gate_layer.get_cell_tile_data(tile_coords)
-	#if gate_data:
-		#var other_coords: Vector2i = gate_data.get_custom_data("other_input_coords")
-		#var input_2: bool = check_tile_state(tile_coords + other_coords, logic_layer)
-		#var output_coords: Vector2i = tile_coords + gate_data.get_custom_data("output_coords")
-#
-		#var output: bool
-		## NOT
-		#if gate_layer.get_cell_source_id(tile_coords) == 1:
-			#output = not input_1
-		## AND
-		#elif gate_layer.get_cell_source_id(tile_coords) == 2:
-			#output = input_1 and input_2
-		## OR
-		#elif gate_layer.get_cell_source_id(tile_coords) == 3:
-			#output = input_1 or input_2
-		## NAND
-		#elif gate_layer.get_cell_source_id(tile_coords) == 4:
-			#output = not (input_1 and input_2)
-		## NOR
-		#elif gate_layer.get_cell_source_id(tile_coords) == 5:
-			#output = not (input_1 or input_2)
-		## XOR
-		#elif gate_layer.get_cell_source_id(tile_coords) == 6:
-			#output = (input_1 and not input_2) or (not input_1 and input_2)
-		## XNOR
-		#elif gate_layer.get_cell_source_id(tile_coords) == 7:
-			#output = true if input_1 == input_2 else false
-#
-		#order_queue.append(Callable(self, &"update_wire").bind(output_coords, output, wire_layer,
-				#logic_layer))
-#
-#
-#func check_for_gate(tile_coords: Vector2i) -> void:
-	#if (
-			#gate_layer.get_cell_source_id(tile_coords) >= 1
-			#and (gate_layer.get_cell_atlas_coords(tile_coords) == Vector2i(0, 0)
-					#or gate_layer.get_cell_atlas_coords(tile_coords) == Vector2i(0, 2)
-			#)
-	#):
-		#order_queue.append(Callable(self, &"evaluate_gate").bind(tile_coords))
-#
-#
-#func check_for_wires(tile_coords: Vector2i, state: bool, wire: TileMapLayer,
-		#logic:  TileMapLayer) -> void:
-	#var next_step := Callable(self, &"update_wire")
-#
-	#var wire_data: TileData = wire.get_cell_tile_data(tile_coords)
-	#if wire_data:
-		#var next_wire := Vector2i.ZERO
-		#if wire_data.get_custom_data("right_direction"):
-			#next_wire = tile_coords + Vector2i.RIGHT
-			#if check_tile_state(next_wire, logic) != state:
-				#order_queue.append(next_step.bind(next_wire, state, wire, logic))
-		#if wire_data.get_custom_data("down_direction"):
-			#next_wire = tile_coords + Vector2i.DOWN
-			#if check_tile_state(next_wire, logic) != state:
-				#order_queue.append(next_step.bind(next_wire, state, wire, logic))
-		#if wire_data.get_custom_data("left_direction"):
-			#next_wire = tile_coords + Vector2i.LEFT
-			#if check_tile_state(next_wire, logic) != state:
-				#order_queue.append(next_step.bind(next_wire, state, wire, logic))
-		#if wire_data.get_custom_data("up_direction"):
-			#next_wire = tile_coords + Vector2i.UP
-			#if check_tile_state(next_wire, logic) != state:
-				#order_queue.append(next_step.bind(next_wire, state, wire, logic))
-	#if wire_layer.get_cell_atlas_coords(tile_coords) == Vector2i(0, 0):
-		#if check_tile_state(tile_coords, logic_layer) != state:
-			#order_queue.append(next_step.bind(tile_coords, state, wire_layer, logic_layer))
-	#if wire_layer_2.get_cell_atlas_coords(tile_coords) == Vector2i(0, 0):
-		#if check_tile_state(tile_coords, logic_layer_2) != state:
-			#order_queue.append(next_step.bind(tile_coords, state, wire_layer_2, logic_layer_2))
-#
-#
-#func check_tile_state(tile_pos: Vector2i, logic: TileMapLayer) -> bool:
-	#var logic_data: TileData = logic.get_cell_tile_data(tile_pos)
-	#if logic_data:
-		#return logic_data.get_custom_data("state")
-	#return false
 
 
 func _on_editor_interface_mode_selected(mode: EditorMode.Selected) -> void:

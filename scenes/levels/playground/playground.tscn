@@ -4,7 +4,7 @@
 [ext_resource type="TileSet" uid="uid://dhfs68s3itmxi" path="res://assets/resources/tilesets/wire_tileset.tres" id="2_mw4bp"]
 [ext_resource type="Texture2D" uid="uid://cj86b6py6lf00" path="res://icon.svg" id="3_cfd3d"]
 [ext_resource type="Script" uid="uid://iua6lifhsyfb" path="res://scenes/levels/playground/camera_2d.gd" id="3_dsu8x"]
-[ext_resource type="Script" uid="uid://w6dok6yxgi4x" path="res://scenes/levels/playground/wire_logic.gd" id="4_kqs0i"]
+[ext_resource type="Script" uid="uid://w6dok6yxgi4x" path="res://scenes/levels/playground/wires.gd" id="4_kqs0i"]
 [ext_resource type="TileSet" uid="uid://boqjjkshra24t" path="res://assets/resources/tilesets/gate_tileset.tres" id="4_myh4h"]
 [ext_resource type="PackedScene" uid="uid://ba0bl16fuws1s" path="res://scenes/interfaces/editor_interface.tscn" id="7_dhyt4"]
 
@@ -45,7 +45,7 @@ tile_set = ExtResource("2_mw4bp")
 collision_enabled = false
 navigation_enabled = false
 
-[node name="GateLayer" type="TileMapLayer" parent="."]
+[node name="GateLayer" type="TileMapLayer" parent="Wires"]
 tile_set = ExtResource("4_myh4h")
 
 [node name="Camera2D" type="Camera2D" parent="."]

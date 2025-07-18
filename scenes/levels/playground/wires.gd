@@ -93,18 +93,34 @@ func check_for_wires(tile_coords: Vector2i, state: bool, wire: TileMapLayer,
 		var next_wire := Vector2i.ZERO
 		if wire_data.get_custom_data("right_direction"):
 			next_wire = tile_coords + Vector2i.RIGHT
+			if (
+					wire_layer.get_cell_atlas_coords(next_wire).x > 6
+			):
+				next_wire = next_wire + Vector2i.RIGHT
 			if check_tile_state(next_wire, logic) != state:
 				order_queue.append(next_step.bind(next_wire, state, wire, logic))
 		if wire_data.get_custom_data("down_direction"):
 			next_wire = tile_coords + Vector2i.DOWN
+			if (
+					wire_layer.get_cell_atlas_coords(next_wire).x > 6
+			):
+				next_wire = next_wire + Vector2i.DOWN
 			if check_tile_state(next_wire, logic) != state:
 				order_queue.append(next_step.bind(next_wire, state, wire, logic))
 		if wire_data.get_custom_data("left_direction"):
 			next_wire = tile_coords + Vector2i.LEFT
+			if (
+					wire_layer.get_cell_atlas_coords(next_wire).x > 6
+			):
+				next_wire = next_wire + Vector2i.LEFT
 			if check_tile_state(next_wire, logic) != state:
 				order_queue.append(next_step.bind(next_wire, state, wire, logic))
 		if wire_data.get_custom_data("up_direction"):
 			next_wire = tile_coords + Vector2i.UP
+			if (
+					wire_layer.get_cell_atlas_coords(next_wire).x > 6
+			):
+				next_wire = next_wire + Vector2i.UP
 			if check_tile_state(next_wire, logic) != state:
 				order_queue.append(next_step.bind(next_wire, state, wire, logic))
 	if wire_layer.get_cell_atlas_coords(tile_coords) == Vector2i(0, 0):
@@ -296,6 +312,13 @@ func update_wire_tile(tile_position: Vector2i, new_direction: Vector2i, add: boo
 func draw_wire() -> void:
 	if not buffer_position.is_empty():
 		if buffer_position[0] == buffer_position[1]:
+			if (
+					wire_layer.get_cell_atlas_coords(get_mouse_pos()) == Vector2i(3, 0)
+					or wire_layer.get_cell_atlas_coords(get_mouse_pos()) == Vector2i(4, 0)
+			):
+				wire_layer.set_cell(get_mouse_pos(), 0, wire_layer.get_cell_atlas_coords(get_mouse_pos()) + Vector2i(3, 0), wire_layer.get_cell_alternative_tile(get_mouse_pos()))
+			else:
+				wire_layer.set_cell(get_mouse_pos(), 0, wire_layer.get_cell_atlas_coords(get_mouse_pos()) - Vector2i(3, 0), wire_layer.get_cell_alternative_tile(get_mouse_pos()))
 			buffer_position.clear()
 			return
 

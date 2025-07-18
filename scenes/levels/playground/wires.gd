@@ -313,11 +313,14 @@ func draw_wire() -> void:
 	if not buffer_position.is_empty():
 		if buffer_position[0] == buffer_position[1]:
 			if (
-					wire_layer.get_cell_atlas_coords(get_mouse_pos()) == Vector2i(3, 0)
-					or wire_layer.get_cell_atlas_coords(get_mouse_pos()) == Vector2i(4, 0)
+					wire_layer.get_cell_atlas_coords(get_mouse_pos()).x == 3
+					or wire_layer.get_cell_atlas_coords(get_mouse_pos()).x == 4
 			):
 				wire_layer.set_cell(get_mouse_pos(), 0, wire_layer.get_cell_atlas_coords(get_mouse_pos()) + Vector2i(3, 0), wire_layer.get_cell_alternative_tile(get_mouse_pos()))
-			else:
+			elif (
+					wire_layer.get_cell_atlas_coords(get_mouse_pos()).x == 6
+					or wire_layer.get_cell_atlas_coords(get_mouse_pos()).x == 7
+			):
 				wire_layer.set_cell(get_mouse_pos(), 0, wire_layer.get_cell_atlas_coords(get_mouse_pos()) - Vector2i(3, 0), wire_layer.get_cell_alternative_tile(get_mouse_pos()))
 			buffer_position.clear()
 			return

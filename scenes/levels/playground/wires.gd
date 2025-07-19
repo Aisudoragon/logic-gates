@@ -1,5 +1,6 @@
 class_name Wires extends Node2D
 
+const ORDER_EXECUTES := 1500
 var order_queue: Array[Callable]
 var buffer_position: Array[Vector2i]
 var rotated: bool = false
@@ -15,8 +16,12 @@ func _process(_delta: float) -> void:
 		execute_queue()
 
 
+func get_queue_size() -> int:
+	return order_queue.size()
+
+
 func execute_queue() -> void:
-	for i in range(1500):
+	for i in range(ORDER_EXECUTES):
 		if order_queue.is_empty():
 			return
 		var do_now: Callable = order_queue.pop_front()

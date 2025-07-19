@@ -97,6 +97,29 @@ icon = ExtResource("11_7acij")
 icon_alignment = 1
 vertical_icon_alignment = 0
 
+[node name="DebugCoordinates" type="Label" parent="."]
+anchors_preset = -1
+offset_left = 20.0
+offset_top = 20.0
+theme_override_font_sizes/font_size = 35
+
+[node name="DebugZoomLevel" type="Label" parent="."]
+anchors_preset = -1
+offset_left = 20.0
+offset_top = 60.0
+theme_override_font_sizes/font_size = 35
+
+[node name="DebugQueueSize" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -21.0
+offset_top = 20.0
+offset_right = -13.0
+offset_bottom = 43.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 35
+
 [connection signal="pressed" from="HBoxContainer/SelectThings" to="." method="_on_select_things_pressed"]
 [connection signal="pressed" from="HBoxContainer/DrawWire" to="." method="_on_draw_wire_pressed"]
 [connection signal="pressed" from="HBoxContainer/PlaceStartEnd" to="." method="_on_place_start_end_pressed"]

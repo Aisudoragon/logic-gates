@@ -4,7 +4,12 @@ var mode_selected: EditorMode.Selected = EditorMode.Selected.SELECT
 @onready var wires: Wires = $Wires
 
 
+func _process(_delta: float) -> void:
+	$EditorInterface.update_queue_size(wires.get_queue_size())
+
+
 func _unhandled_input(event: InputEvent) -> void:
+	$EditorInterface.update_coordinates(wires.get_mouse_pos())
 	match mode_selected:
 		EditorMode.Selected.SELECT:
 			if event.is_action_pressed(&"place"):

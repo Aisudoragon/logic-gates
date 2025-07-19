@@ -1,6 +1,21 @@
 extends CanvasLayer
 
 signal mode_selected(mode: EditorMode.Selected)
+@onready var debug_coordinates: Label = $DebugCoordinates
+@onready var debug_zoom_level: Label = $DebugZoomLevel
+@onready var debug_queue_size: Label = $DebugQueueSize
+
+
+func update_coordinates(mouse_pos: Vector2i) -> void:
+	debug_coordinates.text = "%d, %d" % [mouse_pos.x, mouse_pos.y]
+
+
+func update_zoom_level(zoom: float) -> void:
+	debug_zoom_level.text = "zoom: %.3f" % zoom
+
+
+func update_queue_size(size: int) -> void:
+	debug_queue_size.text = "%d : queue" % size
 
 
 func _on_select_things_pressed() -> void:

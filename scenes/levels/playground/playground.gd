@@ -30,7 +30,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_:
 			if event.is_action_pressed(&"place"):
 				wires.place_gate(mode_selected)
-			
+
 			if event is InputEventMouseMotion:
 				wires.highlight_gate()
 

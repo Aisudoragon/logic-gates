@@ -24,7 +24,8 @@ func execute_queue() -> void:
 			do_now.callv([])
 
 
-func update_wire(tile_coords: Vector2i, state: bool, wire: TileMapLayer, logic: TileMapLayer) -> void:
+func update_wire(tile_coords: Vector2i, state: bool, wire: TileMapLayer,
+		logic: TileMapLayer) -> void:
 	logic.set_cell(tile_coords, 0, Vector2i(0, 0), state)
 
 	check_for_gate(tile_coords)
@@ -84,6 +85,7 @@ func check_for_gate(tile_coords: Vector2i) -> void:
 		else:
 			gate_layer.set_cell(tile_coords, 0, Vector2i(1, 0), 2)
 
+
 func check_for_wires(tile_coords: Vector2i, state: bool, wire: TileMapLayer,
 		logic:  TileMapLayer) -> void:
 	var next_step := Callable(self, &"update_wire")
@@ -93,33 +95,25 @@ func check_for_wires(tile_coords: Vector2i, state: bool, wire: TileMapLayer,
 		var next_wire := Vector2i.ZERO
 		if wire_data.get_custom_data("right_direction"):
 			next_wire = tile_coords + Vector2i.RIGHT
-			if (
-					wire_layer.get_cell_atlas_coords(next_wire).x > 6
-			):
+			if wire_layer.get_cell_atlas_coords(next_wire).x > 6:
 				next_wire = next_wire + Vector2i.RIGHT
 			if check_tile_state(next_wire, logic) != state:
 				order_queue.append(next_step.bind(next_wire, state, wire, logic))
 		if wire_data.get_custom_data("down_direction"):
 			next_wire = tile_coords + Vector2i.DOWN
-			if (
-					wire_layer.get_cell_atlas_coords(next_wire).x > 6
-			):
+			if wire_layer.get_cell_atlas_coords(next_wire).x > 6:
 				next_wire = next_wire + Vector2i.DOWN
 			if check_tile_state(next_wire, logic) != state:
 				order_queue.append(next_step.bind(next_wire, state, wire, logic))
 		if wire_data.get_custom_data("left_direction"):
 			next_wire = tile_coords + Vector2i.LEFT
-			if (
-					wire_layer.get_cell_atlas_coords(next_wire).x > 6
-			):
+			if wire_layer.get_cell_atlas_coords(next_wire).x > 6:
 				next_wire = next_wire + Vector2i.LEFT
 			if check_tile_state(next_wire, logic) != state:
 				order_queue.append(next_step.bind(next_wire, state, wire, logic))
 		if wire_data.get_custom_data("up_direction"):
 			next_wire = tile_coords + Vector2i.UP
-			if (
-					wire_layer.get_cell_atlas_coords(next_wire).x > 6
-			):
+			if wire_layer.get_cell_atlas_coords(next_wire).x > 6:
 				next_wire = next_wire + Vector2i.UP
 			if check_tile_state(next_wire, logic) != state:
 				order_queue.append(next_step.bind(next_wire, state, wire, logic))
@@ -130,12 +124,12 @@ func check_for_wires(tile_coords: Vector2i, state: bool, wire: TileMapLayer,
 
 func toggle_start_gate() -> void:
 	var mouse_pos: Vector2i = get_mouse_pos()
-	
+
 	if gate_layer.get_cell_atlas_coords(mouse_pos) == Vector2i(0, 0):
 		var state := true if gate_layer.get_cell_alternative_tile(mouse_pos) == 1 else false
 		gate_layer.set_cell(mouse_pos, 0, Vector2i(0, 0), 2 if state else 1)
 		logic_layer.set_cell(mouse_pos, 0, Vector2i(0, 0), 1 if state else 0)
-	
+
 		order_queue.append(Callable(self, &"update_wire").bind(mouse_pos, state, wire_layer,
 				logic_layer))
 
@@ -196,13 +190,15 @@ func highlight_line(starting_position: Vector2i, ending_position: Vector2i) -> v
 	var direction: Vector2i = (ending_position - starting_position).sign()
 
 	if direction.x:
-		for variable_position in range(starting_position.x, ending_position.x + direction.x, direction.x):
+		for variable_position in range(starting_position.x, ending_position.x + direction.x,
+				direction.x):
 			if variable_position != starting_position.x:
 				update_wire_tile(Vector2i(variable_position, starting_position.y), -direction)
 			if variable_position != ending_position.x:
 				update_wire_tile(Vector2i(variable_position, starting_position.y), direction)
 	else:
-		for variable_position in range(starting_position.y, ending_position.y + direction.y, direction.y):
+		for variable_position in range(starting_position.y, ending_position.y + direction.y,
+				direction.y):
 			if variable_position != starting_position.y:
 				update_wire_tile(Vector2i(starting_position.x, variable_position), -direction)
 			if variable_position != ending_position.y:
@@ -316,12 +312,16 @@ func draw_wire() -> void:
 					wire_layer.get_cell_atlas_coords(get_mouse_pos()).x == 3
 					or wire_layer.get_cell_atlas_coords(get_mouse_pos()).x == 4
 			):
-				wire_layer.set_cell(get_mouse_pos(), 0, wire_layer.get_cell_atlas_coords(get_mouse_pos()) + Vector2i(3, 0), wire_layer.get_cell_alternative_tile(get_mouse_pos()))
+				wire_layer.set_cell(get_mouse_pos(), 0,
+						wire_layer.get_cell_atlas_coords(get_mouse_pos()) + Vector2i(3, 0),
+						wire_layer.get_cell_alternative_tile(get_mouse_pos()))
 			elif (
 					wire_layer.get_cell_atlas_coords(get_mouse_pos()).x == 6
 					or wire_layer.get_cell_atlas_coords(get_mouse_pos()).x == 7
 			):
-				wire_layer.set_cell(get_mouse_pos(), 0, wire_layer.get_cell_atlas_coords(get_mouse_pos()) - Vector2i(3, 0), wire_layer.get_cell_alternative_tile(get_mouse_pos()))
+				wire_layer.set_cell(get_mouse_pos(), 0,
+						wire_layer.get_cell_atlas_coords(get_mouse_pos()) - Vector2i(3, 0),
+						wire_layer.get_cell_alternative_tile(get_mouse_pos()))
 			buffer_position.clear()
 			return
 
@@ -359,7 +359,7 @@ func highlight_gate() -> void:
 
 func place_gate(gate_selected: EditorMode.Selected) -> void:
 	var mouse_pos: Vector2i = get_mouse_pos()
-	
+
 	match gate_selected:
 		EditorMode.Selected.STARTEND:
 			var cell_atlas_coords: Vector2i = gate_layer.get_cell_atlas_coords(mouse_pos)

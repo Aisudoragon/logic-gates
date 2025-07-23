@@ -390,18 +390,60 @@ func place_gate(gate_selected: EditorMode.Selected) -> void:
 			place_gate_on_layer(7)
 
 
-func place_gate_on_layer(source: int) -> void:
+func destroy_gate() -> void:
+	# TODO Sprawdzić w jakim miejscu bramki się nacisnęło. Przenieść usuwanie na pierwszy kafelek
+	# usunąć całą bramkę z tego miejsca
 	var mouse_pos: Vector2i = get_mouse_pos()
+	var delete_position: Vector2i
+	var source := 2
+	match gate_layer.get_cell_atlas_coords(mouse_pos):
+		Vector2i(0, 0):
+			delete_position = mouse_pos + Vector2i.RIGHT
+			if gate_layer.get_cell_source_id(mouse_pos) == 1:
+				source = 1
+			else:
+				delete_position += Vector2i.DOWN
+		Vector2i(1, 0):
+			delete_position = mouse_pos
+			if gate_layer.get_cell_source_id(mouse_pos) == 1:
+				source = 1
+			else:
+				delete_position += Vector2i.DOWN
+		Vector2i(2, 0):
+			delete_position = mouse_pos + Vector2i.LEFT
+			if gate_layer.get_cell_source_id(mouse_pos) == 1:
+				source = 1
+			else:
+				delete_position += Vector2i.DOWN
+		Vector2i(0, 1):
+			delete_position = mouse_pos + Vector2i.RIGHT
+		Vector2i(1, 1):
+			delete_position = mouse_pos
+		Vector2i(2, 1):
+			delete_position = mouse_pos + Vector2i.LEFT
+		Vector2i(0, 2):
+			delete_position = mouse_pos + Vector2i.RIGHT + Vector2i.UP
+		Vector2i(1, 2):
+			delete_position = mouse_pos + Vector2i.UP
+		Vector2i(2, 2):
+			delete_position = mouse_pos + Vector2i.LEFT + Vector2i.UP
+		_:
+			print("NOTHING")
+			return
+	place_gate_on_layer(source, delete_position, 1)
+
+
+func place_gate_on_layer(source: int, mouse_pos: Vector2i = get_mouse_pos(), delete := 0) -> void:
 
 	if source == 1:
 		mouse_pos += Vector2i.DOWN
-	gate_layer.set_cell(mouse_pos + Vector2i.UP + Vector2i.LEFT, source, Vector2i(0, 0), 0)
-	gate_layer.set_cell(mouse_pos + Vector2i.UP, source, Vector2i(1, 0), 0)
-	gate_layer.set_cell(mouse_pos + Vector2i.UP + Vector2i.RIGHT, source, Vector2i(2, 0), 0)
+	gate_layer.set_cell(mouse_pos + Vector2i.UP + Vector2i.LEFT, source, Vector2i(0, 0), delete)
+	gate_layer.set_cell(mouse_pos + Vector2i.UP, source, Vector2i(1, 0), delete)
+	gate_layer.set_cell(mouse_pos + Vector2i.UP + Vector2i.RIGHT, source, Vector2i(2, 0), delete)
 	if source >= 2:
-		gate_layer.set_cell(mouse_pos + Vector2i.LEFT, source, Vector2i(0, 1), 0)
-		gate_layer.set_cell(mouse_pos, source, Vector2i(1, 1), 0)
-		gate_layer.set_cell(mouse_pos + Vector2i.RIGHT, source, Vector2i(2, 1), 0)
-		gate_layer.set_cell(mouse_pos + Vector2i.DOWN + Vector2i.LEFT, source, Vector2i(0, 2), 0)
-		gate_layer.set_cell(mouse_pos + Vector2i.DOWN, source, Vector2i(1, 2), 0)
-		gate_layer.set_cell(mouse_pos + Vector2i.DOWN + Vector2i.RIGHT, source, Vector2i(2, 2), 0)
+		gate_layer.set_cell(mouse_pos + Vector2i.LEFT, source, Vector2i(0, 1), delete)
+		gate_layer.set_cell(mouse_pos, source, Vector2i(1, 1), delete)
+		gate_layer.set_cell(mouse_pos + Vector2i.RIGHT, source, Vector2i(2, 1), delete)
+		gate_layer.set_cell(mouse_pos + Vector2i.DOWN + Vector2i.LEFT, source, Vector2i(0, 2), delete)
+		gate_layer.set_cell(mouse_pos + Vector2i.DOWN, source, Vector2i(1, 2), delete)
+		gate_layer.set_cell(mouse_pos + Vector2i.DOWN + Vector2i.RIGHT, source, Vector2i(2, 2), delete)

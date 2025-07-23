@@ -20,7 +20,9 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -138.0
+offset_left = 34.0
+offset_top = -113.0
+offset_right = -34.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -29,85 +31,265 @@ alignment = 1
 
 [node name="SelectThings" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/SelectThings"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/SelectThings/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_q7lvh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/SelectThings/VBoxContainer"]
+layout_mode = 2
 text = "SELECT"
-icon = ExtResource("1_q7lvh")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="DrawWire" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/DrawWire"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/DrawWire/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_4grtn")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/DrawWire/VBoxContainer"]
+layout_mode = 2
 text = "WIRE"
-icon = ExtResource("2_4grtn")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="PlaceStartEnd" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PlaceStartEnd"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PlaceStartEnd/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("4_ngnnj")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaceStartEnd/VBoxContainer"]
+layout_mode = 2
 text = "START END"
-icon = ExtResource("4_ngnnj")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="PlaceNot" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PlaceNot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PlaceNot/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("5_wa0ej")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaceNot/VBoxContainer"]
+layout_mode = 2
 text = "NOT"
-icon = ExtResource("5_wa0ej")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="PlaceAnd" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PlaceAnd"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PlaceAnd/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("6_0w0iy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaceAnd/VBoxContainer"]
+layout_mode = 2
 text = "AND"
-icon = ExtResource("6_0w0iy")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="PlaceNand" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PlaceNand"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PlaceNand/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("7_2lufr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaceNand/VBoxContainer"]
+layout_mode = 2
 text = "NAND"
-icon = ExtResource("7_2lufr")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="PlaceOr" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PlaceOr"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PlaceOr/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("8_rip62")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaceOr/VBoxContainer"]
+layout_mode = 2
 text = "OR"
-icon = ExtResource("8_rip62")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="PlaceNor" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PlaceNor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PlaceNor/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("9_4jvg5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaceNor/VBoxContainer"]
+layout_mode = 2
 text = "NOR"
-icon = ExtResource("9_4jvg5")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="PlaceXor" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PlaceXor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PlaceXor/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("10_3xggy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaceXor/VBoxContainer"]
+layout_mode = 2
 text = "XOR"
-icon = ExtResource("10_3xggy")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="PlaceXnor" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PlaceXnor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PlaceXnor/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("11_7acij")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaceXnor/VBoxContainer"]
+layout_mode = 2
 text = "XNOR"
-icon = ExtResource("11_7acij")
-icon_alignment = 1
-vertical_icon_alignment = 0
+horizontal_alignment = 1
 
 [node name="DebugCoordinates" type="Label" parent="."]
-anchors_preset = -1
 offset_left = 20.0
 offset_top = 20.0
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 25
+text = "Coordinates"
 
 [node name="DebugZoomLevel" type="Label" parent="."]
-anchors_preset = -1
 offset_left = 20.0
 offset_top = 60.0
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 25
+text = "Zoom level"
 
 [node name="DebugQueueSize" type="Label" parent="."]
 anchors_preset = 1
@@ -118,7 +300,8 @@ offset_top = 20.0
 offset_right = -13.0
 offset_bottom = 43.0
 grow_horizontal = 0
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 25
+text = "Queue"
 
 [connection signal="pressed" from="HBoxContainer/SelectThings" to="." method="_on_select_things_pressed"]
 [connection signal="pressed" from="HBoxContainer/DrawWire" to="." method="_on_draw_wire_pressed"]

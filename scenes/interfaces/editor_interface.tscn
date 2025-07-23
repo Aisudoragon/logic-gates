@@ -30,6 +30,7 @@ size_flags_vertical = 8
 alignment = 1
 
 [node name="SelectThings" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -55,6 +56,7 @@ text = "SELECT"
 horizontal_alignment = 1
 
 [node name="DrawWire" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -80,6 +82,7 @@ text = "WIRE"
 horizontal_alignment = 1
 
 [node name="PlaceStartEnd" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -105,6 +108,7 @@ text = "START END"
 horizontal_alignment = 1
 
 [node name="PlaceNot" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -130,6 +134,7 @@ text = "NOT"
 horizontal_alignment = 1
 
 [node name="PlaceAnd" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -155,6 +160,7 @@ text = "AND"
 horizontal_alignment = 1
 
 [node name="PlaceNand" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -180,6 +186,7 @@ text = "NAND"
 horizontal_alignment = 1
 
 [node name="PlaceOr" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -205,6 +212,7 @@ text = "OR"
 horizontal_alignment = 1
 
 [node name="PlaceNor" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -230,6 +238,7 @@ text = "NOR"
 horizontal_alignment = 1
 
 [node name="PlaceXor" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -255,6 +264,7 @@ text = "XOR"
 horizontal_alignment = 1
 
 [node name="PlaceXnor" type="Button" parent="HBoxContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 

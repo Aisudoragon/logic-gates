@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://vxc7l235kxff"]
+[gd_scene load_steps=11 format=3 uid="uid://vxc7l235kxff"]
 
 [ext_resource type="Script" uid="uid://ddrbmlbq6sk85" path="res://scenes/levels/playground/playground.gd" id="1_ywb2o"]
 [ext_resource type="TileSet" uid="uid://dhfs68s3itmxi" path="res://assets/resources/tilesets/wire_tileset.tres" id="2_mw4bp"]
+[ext_resource type="Script" uid="uid://bh6pxtvechol" path="res://scenes/levels/playground/grid_lines.gd" id="2_olfo7"]
 [ext_resource type="Texture2D" uid="uid://cj86b6py6lf00" path="res://icon.svg" id="3_cfd3d"]
 [ext_resource type="Script" uid="uid://iua6lifhsyfb" path="res://scenes/levels/playground/camera_2d.gd" id="3_dsu8x"]
 [ext_resource type="Script" uid="uid://w6dok6yxgi4x" path="res://scenes/levels/playground/wires.gd" id="4_kqs0i"]
@@ -27,6 +28,13 @@ sources/0 = SubResource("TileSetAtlasSource_qivgt")
 [node name="Playground" type="Node2D"]
 script = ExtResource("1_ywb2o")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+editor_draw_screen = false
+script = ExtResource("3_dsu8x")
+
+[node name="GridLines" type="Node2D" parent="."]
+script = ExtResource("2_olfo7")
+
 [node name="Wires" type="Node2D" parent="."]
 script = ExtResource("4_kqs0i")
 
@@ -47,10 +55,6 @@ navigation_enabled = false
 
 [node name="GateLayer" type="TileMapLayer" parent="Wires"]
 tile_set = ExtResource("4_myh4h")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-anchor_mode = 0
-script = ExtResource("3_dsu8x")
 
 [node name="EditorInterface" parent="." instance=ExtResource("7_dhyt4")]
 

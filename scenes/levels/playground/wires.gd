@@ -4,6 +4,7 @@ const ORDER_EXECUTES := 1500
 var order_queue: Array[Callable]
 var buffer_position: Array[Vector2i]
 var rotated: bool = false
+var gate_patterns: Dictionary[String, TileMapPattern]
 
 @onready var logic_layer: TileMapLayer = $LogicLayer
 @onready var wire_layer: TileMapLayer = $WireLayer
@@ -431,29 +432,9 @@ func destroy_gate(mouse_pos: Vector2i = get_mouse_pos()) -> void:
 
 
 func place_gate_on_layer(source: int, mouse_pos: Vector2i = get_mouse_pos(), alternative := 0) -> void:
-	if source == 1:
-		mouse_pos += Vector2i.LEFT
-		gate_layer.set_cell(mouse_pos, source, Vector2i(0, 0), alternative)
-		mouse_pos += Vector2i.RIGHT
-		gate_layer.set_cell(mouse_pos, source, Vector2i(1, 0), alternative)
-		mouse_pos += Vector2i.RIGHT
-		gate_layer.set_cell(mouse_pos, source, Vector2i(2, 0), alternative)
-	if source >= 2:
-		mouse_pos += Vector2i.LEFT + Vector2i.UP
-		gate_layer.set_cell(mouse_pos, source, Vector2i(0, 0), alternative)
-		mouse_pos += Vector2i.RIGHT
-		gate_layer.set_cell(mouse_pos, source, Vector2i(1, 0), alternative)
-		mouse_pos += Vector2i.RIGHT
-		gate_layer.set_cell(mouse_pos, source, Vector2i(2, 0), alternative)
-		mouse_pos += Vector2i.DOWN
-		gate_layer.set_cell(mouse_pos, source, Vector2i(2, 1), alternative)
-		mouse_pos += Vector2i.LEFT
-		gate_layer.set_cell(mouse_pos, source, Vector2i(1, 1), alternative)
-		mouse_pos += Vector2i.LEFT
-		gate_layer.set_cell(mouse_pos, source, Vector2i(0, 1), alternative)
-		mouse_pos += Vector2i.DOWN
-		gate_layer.set_cell(mouse_pos, source, Vector2i(0, 2), alternative)
-		mouse_pos += Vector2i.RIGHT
-		gate_layer.set_cell(mouse_pos, source, Vector2i(1, 2), alternative)
-		mouse_pos += Vector2i.RIGHT
-		gate_layer.set_cell(mouse_pos, source, Vector2i(2, 2), alternative)
+	source -= 1
+	mouse_pos += Vector2i.LEFT
+	if not source == 0:
+		mouse_pos += Vector2i.UP
+	var pattern: TileMapPattern = gate_layer.tile_set.get_pattern(source)
+	gate_layer.set_pattern(mouse_pos, pattern)

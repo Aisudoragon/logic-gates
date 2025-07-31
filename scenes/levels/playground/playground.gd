@@ -32,9 +32,12 @@ func _unhandled_input(event: InputEvent) -> void:
 					wires.highlight_point()
 				if Input.is_action_pressed(&"destroy"):
 					wires.delete_wire()
+		# gate behavior
 		_:
 			if event.is_action_pressed(&"place"):
 				wires.place_gate(mode_selected)
+			if event.is_action_pressed(&"rotate"):
+				wires.rotate_gate()
 			if event.is_action_pressed(&"destroy"):
 				wires.destroy_gate()
 

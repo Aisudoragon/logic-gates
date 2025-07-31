@@ -5,6 +5,7 @@ var order_queue: Array[Callable]
 var buffer_position: Array[Vector2i]
 var rotated: bool = false
 var gate_patterns: Dictionary[String, TileMapPattern]
+var gate_rotation := 0
 
 @onready var logic_layer: TileMapLayer = $LogicLayer
 @onready var wire_layer: TileMapLayer = $WireLayer
@@ -39,38 +40,58 @@ func update_wire(tile_coords: Vector2i, state: bool, wire: TileMapLayer,
 
 
 func evaluate_gate(tile_coords: Vector2i) -> void:
-	var input_1: bool = check_tile_state(tile_coords, logic_layer)
+	# TODO sprawdzenie w jakiej rotacji znajduje się bramka
 	var gate_data: TileData = gate_layer.get_cell_tile_data(tile_coords)
-	if gate_data:
-		var other_coords: Vector2i = gate_data.get_custom_data("other_input_coords")
-		var input_2: bool = check_tile_state(tile_coords + other_coords, logic_layer)
-		var output_coords: Vector2i = tile_coords + gate_data.get_custom_data("output_coords")
+	if not gate_data:
+		return
 
-		var output: bool
-		# NOT
-		if gate_layer.get_cell_source_id(tile_coords) == 1:
-			output = not input_1
-		# AND
-		elif gate_layer.get_cell_source_id(tile_coords) == 2:
-			output = input_1 and input_2
-		# OR
-		elif gate_layer.get_cell_source_id(tile_coords) == 3:
-			output = input_1 or input_2
-		# NAND
-		elif gate_layer.get_cell_source_id(tile_coords) == 4:
-			output = not (input_1 and input_2)
-		# NOR
-		elif gate_layer.get_cell_source_id(tile_coords) == 5:
-			output = not (input_1 or input_2)
-		# XOR
-		elif gate_layer.get_cell_source_id(tile_coords) == 6:
-			output = (input_1 and not input_2) or (not input_1 and input_2)
-		# XNOR
-		elif gate_layer.get_cell_source_id(tile_coords) == 7:
-			output = true if input_1 == input_2 else false
+	var other_coords: Vector2i = gate_data.get_custom_data("other_input_coords")
+	var output_coords: Vector2i = gate_data.get_custom_data("output_coords")
 
-		order_queue.append(Callable(self, &"update_wire").bind(output_coords, output, wire_layer,
-				logic_layer))
+	var is_h_flipped: bool = gate_layer.is_cell_flipped_h(tile_coords)
+	var is_v_flipped: bool = gate_layer.is_cell_flipped_v(tile_coords)
+	var is_transposed: bool = gate_layer.is_cell_transposed(tile_coords)
+	# 90 degrees
+	if is_h_flipped and is_transposed:
+		other_coords = Vector2i(-other_coords.y, other_coords.x)
+		output_coords = Vector2i(-output_coords.y, output_coords.x)
+	# 180 degrees
+	if is_h_flipped and is_v_flipped:
+		other_coords = -other_coords
+		output_coords = -output_coords
+	# 270 degrees
+	if is_v_flipped and is_transposed:
+		other_coords = Vector2i(other_coords.y, -other_coords.x)
+		output_coords = Vector2i(output_coords.y, -output_coords.x)
+
+	var input_1: bool = check_tile_state(tile_coords, logic_layer)
+	var input_2: bool = check_tile_state(tile_coords + other_coords, logic_layer)
+
+	var output: bool
+	# NOT
+	if gate_layer.get_cell_source_id(tile_coords) == 1:
+		output = not input_1
+	# AND
+	elif gate_layer.get_cell_source_id(tile_coords) == 2:
+		output = input_1 and input_2
+	# OR
+	elif gate_layer.get_cell_source_id(tile_coords) == 3:
+		output = input_1 or input_2
+	# NAND
+	elif gate_layer.get_cell_source_id(tile_coords) == 4:
+		output = not (input_1 and input_2)
+	# NOR
+	elif gate_layer.get_cell_source_id(tile_coords) == 5:
+		output = not (input_1 or input_2)
+	# XOR
+	elif gate_layer.get_cell_source_id(tile_coords) == 6:
+		output = (input_1 and not input_2) or (not input_1 and input_2)
+	# XNOR
+	elif gate_layer.get_cell_source_id(tile_coords) == 7:
+		output = true if input_1 == input_2 else false
+
+	order_queue.append(Callable(self, &"update_wire").bind(output_coords + tile_coords, output, wire_layer,
+			logic_layer))
 
 
 func check_for_gate(tile_coords: Vector2i) -> void:
@@ -428,13 +449,18 @@ func destroy_gate(mouse_pos: Vector2i = get_mouse_pos()) -> void:
 		_:
 			print("NOTHING")
 			return
-	place_gate_on_layer(source, delete_position, 1)
+	place_gate_on_layer(source, delete_position)
 
 
-func place_gate_on_layer(source: int, mouse_pos: Vector2i = get_mouse_pos(), alternative := 0) -> void:
-	source -= 1
-	mouse_pos += Vector2i.LEFT
-	if not source == 0:
+func place_gate_on_layer(source: int, mouse_pos: Vector2i = get_mouse_pos()) -> void:
+	source += gate_rotation * 7 - 1
+	if not (source == 0 or source == 14):
 		mouse_pos += Vector2i.UP
+	if not (source == 7 or source == 21):
+		mouse_pos += Vector2i.LEFT
 	var pattern: TileMapPattern = gate_layer.tile_set.get_pattern(source)
 	gate_layer.set_pattern(mouse_pos, pattern)
+
+
+func rotate_gate() -> void:
+	gate_rotation = gate_rotation + 1 if gate_rotation < 3 else 0

@@ -1,16 +1,16 @@
 class_name Wires extends Node2D
 
+@export var logic_layer: TileMapLayer
+@export var wire_layer: TileMapLayer
+@export var highlight_layer: TileMapLayer
+@export var gate_layer: TileMapLayer
+
 const ORDER_EXECUTES := 1500
 var order_queue: Array[Callable]
 var buffer_position: Array[Vector2i]
 var rotated: bool = false
 var gate_patterns: Dictionary[String, TileMapPattern]
 var gate_rotation := 0
-
-@onready var logic_layer: TileMapLayer = $LogicLayer
-@onready var wire_layer: TileMapLayer = $WireLayer
-@onready var highlight_layer: TileMapLayer = $HighlightLayer
-@onready var gate_layer: TileMapLayer = $GateLayer
 
 
 func _process(_delta: float) -> void:

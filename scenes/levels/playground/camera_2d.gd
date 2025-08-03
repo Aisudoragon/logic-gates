@@ -1,12 +1,12 @@
 extends Camera2D
 
-var zoomMin: float = 0.05
-var zoomMax: float = 2.0
-var dragSensitivity: float = 1.0
+@export var wires_interface: WiresInterface
 @export var zoomSpeed: float = 0.025
 @export var camera_speed: float = 1000.0
 
-@onready var wires_interface: WiresInterface = $"../WiresInterface"
+var zoomMin: float = 0.05
+var zoomMax: float = 2.0
+var dragSensitivity: float = 1.0
 
 
 func _process(delta: float) -> void:

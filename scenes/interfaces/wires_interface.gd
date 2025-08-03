@@ -1,9 +1,10 @@
 class_name WiresInterface extends CanvasLayer
 
+@export var debug_coordinates: Label
+@export var debug_zoom_level: Label
+@export var debug_queue_size: Label
+
 signal mode_selected(mode: EditorMode.Selected)
-@onready var debug_coordinates: Label = $DebugCoordinates
-@onready var debug_zoom_level: Label = $DebugZoomLevel
-@onready var debug_queue_size: Label = $DebugQueueSize
 
 
 func update_coordinates(mouse_pos: Vector2i) -> void:

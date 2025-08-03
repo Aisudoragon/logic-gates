@@ -12,8 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://ddfq6xx07qih5" path="res://assets/resources/textures/gates/xor_gate.png" id="10_3xggy"]
 [ext_resource type="Texture2D" uid="uid://bw6dcg6rj4l22" path="res://assets/resources/textures/gates/xnor_gate.png" id="11_7acij"]
 
-[node name="WiresInterface" type="CanvasLayer"]
+[node name="WiresInterface" type="CanvasLayer" node_paths=PackedStringArray("debug_coordinates", "debug_zoom_level", "debug_queue_size")]
 script = ExtResource("1_ayhpq")
+debug_coordinates = NodePath("DebugCoordinates")
+debug_zoom_level = NodePath("DebugZoomLevel")
+debug_queue_size = NodePath("DebugQueueSize")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchors_preset = 12

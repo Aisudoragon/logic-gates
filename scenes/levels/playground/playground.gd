@@ -1,9 +1,9 @@
 extends Node2D
 
-var mode_selected: EditorMode.Selected = EditorMode.Selected.SELECT
+@export var wires: Wires
+@export var wires_interface: WiresInterface
 
-@onready var wires: Wires = $Wires
-@onready var wires_interface: WiresInterface = $WiresInterface
+var mode_selected: EditorMode.Selected = EditorMode.Selected.SELECT
 
 
 func _process(_delta: float) -> void:

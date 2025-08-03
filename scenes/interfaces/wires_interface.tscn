@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://ba0bl16fuws1s"]
 
-[ext_resource type="Script" uid="uid://csitk4tag8uya" path="res://scenes/interfaces/editor_interface.gd" id="1_ayhpq"]
+[ext_resource type="Script" uid="uid://csitk4tag8uya" path="res://scenes/interfaces/wires_interface.gd" id="1_ayhpq"]
 [ext_resource type="Texture2D" uid="uid://fhjnqem02rdj" path="res://assets/resources/textures/cursor.png" id="1_q7lvh"]
 [ext_resource type="Texture2D" uid="uid://mlshv5b0su4p" path="res://assets/resources/textures/wire_icon.png" id="2_4grtn"]
 [ext_resource type="Texture2D" uid="uid://bn8kqmn3h7yg1" path="res://assets/resources/textures/startstop.png" id="4_ngnnj"]
@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://ddfq6xx07qih5" path="res://assets/resources/textures/gates/xor_gate.png" id="10_3xggy"]
 [ext_resource type="Texture2D" uid="uid://bw6dcg6rj4l22" path="res://assets/resources/textures/gates/xnor_gate.png" id="11_7acij"]
 
-[node name="EditorInterface" type="CanvasLayer"]
+[node name="WiresInterface" type="CanvasLayer"]
 script = ExtResource("1_ayhpq")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]

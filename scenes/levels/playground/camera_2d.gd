@@ -6,6 +6,8 @@ var dragSensitivity: float = 1.0
 @export var zoomSpeed: float = 0.025
 @export var camera_speed: float = 1000.0
 
+@onready var wires_interface: WiresInterface = $"../WiresInterface"
+
 
 func _process(delta: float) -> void:
 	var direction: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
@@ -23,7 +25,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			zoom -= Vector2(zoomSpeed, zoomSpeed)
 		zoom = clamp(zoom, Vector2(zoomMin, zoomMin), Vector2(zoomMax, zoomMax))
 
-		$"../EditorInterface".update_zoom_level(zoom.x)
+		wires_interface.update_zoom_level(zoom.x)
 
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 		var event_mm: InputEventMouseMotion = event

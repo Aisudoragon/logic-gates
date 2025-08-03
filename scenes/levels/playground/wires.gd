@@ -40,7 +40,6 @@ func update_wire(tile_coords: Vector2i, state: bool, wire: TileMapLayer,
 
 
 func evaluate_gate(tile_coords: Vector2i) -> void:
-	# TODO sprawdzenie w jakiej rotacji znajduje się bramka
 	var gate_data: TileData = gate_layer.get_cell_tile_data(tile_coords)
 	if not gate_data:
 		return

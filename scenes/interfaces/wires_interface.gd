@@ -1,4 +1,4 @@
-extends CanvasLayer
+class_name WiresInterface extends CanvasLayer
 
 signal mode_selected(mode: EditorMode.Selected)
 @onready var debug_coordinates: Label = $DebugCoordinates

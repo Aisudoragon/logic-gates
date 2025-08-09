@@ -390,18 +390,18 @@ func place_gate(gate_selected: EditorMode.Selected) -> void:
 		EditorMode.Selected.STARTEND:
 			var cell_atlas_coords: Vector2i = gate_layer.get_cell_atlas_coords(mouse_pos)
 			if cell_atlas_coords == Vector2i(-1, -1):
-				gate_layer.set_cell(mouse_pos, 0, Vector2i(0, 0), 1)
+				gate_layer.set_cell(mouse_pos, 1, Vector2i(0, 0), 1)
 			elif cell_atlas_coords == Vector2i(0, 0):
-				gate_layer.set_cell(mouse_pos, 0, Vector2i(1, 0), 1)
+				gate_layer.set_cell(mouse_pos, 1, Vector2i(1, 0), 1)
 			else:
 				gate_layer.set_cell(mouse_pos)
 		EditorMode.Selected.NOT:
 			place_gate_on_layer(1)
 		EditorMode.Selected.AND:
 			place_gate_on_layer(2)
-		EditorMode.Selected.OR:
-			place_gate_on_layer(3)
 		EditorMode.Selected.NAND:
+			place_gate_on_layer(3)
+		EditorMode.Selected.OR:
 			place_gate_on_layer(4)
 		EditorMode.Selected.NOR:
 			place_gate_on_layer(5)

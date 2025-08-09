@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://vxc7l235kxff"]
+[gd_scene load_steps=12 format=3 uid="uid://vxc7l235kxff"]
 
 [ext_resource type="Script" uid="uid://ddrbmlbq6sk85" path="res://scenes/levels/playground/playground.gd" id="1_ywb2o"]
 [ext_resource type="TileSet" uid="uid://dhfs68s3itmxi" path="res://assets/resources/tilesets/wire_tileset.tres" id="2_mw4bp"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://iua6lifhsyfb" path="res://scenes/levels/playground/camera_2d.gd" id="3_dsu8x"]
 [ext_resource type="Script" uid="uid://w6dok6yxgi4x" path="res://scenes/levels/playground/wires.gd" id="4_kqs0i"]
 [ext_resource type="TileSet" uid="uid://boqjjkshra24t" path="res://assets/resources/tilesets/gate_tileset.tres" id="4_myh4h"]
+[ext_resource type="Script" uid="uid://nxyr8hqa0lkw" path="res://scenes/levels/playground/highlight_layer.gd" id="6_k3bpp"]
 [ext_resource type="PackedScene" uid="uid://ba0bl16fuws1s" path="res://scenes/interfaces/wires_interface.tscn" id="7_dhyt4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qivgt"]
@@ -55,6 +56,7 @@ self_modulate = Color(1, 1, 1, 0.521569)
 tile_set = ExtResource("2_mw4bp")
 collision_enabled = false
 navigation_enabled = false
+script = ExtResource("6_k3bpp")
 
 [node name="GateLayer" type="TileMapLayer" parent="Wires"]
 tile_set = ExtResource("4_myh4h")

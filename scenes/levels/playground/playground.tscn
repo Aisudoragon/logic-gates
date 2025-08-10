@@ -53,7 +53,7 @@ navigation_enabled = false
 
 [node name="HighlightLayer" type="TileMapLayer" parent="Wires"]
 self_modulate = Color(1, 1, 1, 0.521569)
-tile_set = ExtResource("2_mw4bp")
+tile_set = ExtResource("4_myh4h")
 collision_enabled = false
 navigation_enabled = false
 script = ExtResource("6_k3bpp")

@@ -6,6 +6,11 @@ extends Node2D
 var mode_selected: EditorMode.Selected = EditorMode.Selected.SELECT
 
 
+func _ready() -> void:
+	var test: Array[int]
+	test.append(1)
+
+
 func _process(_delta: float) -> void:
 	wires_interface.update_queue_size((wires.get_queue_size()))
 

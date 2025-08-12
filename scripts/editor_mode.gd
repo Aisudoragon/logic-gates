@@ -1,9 +1,13 @@
 class_name EditorMode
 
-enum Selected {
+enum Mode {
 	SELECT,
 	WIRE,
-	STARTEND,
+	GATE,
+}
+
+enum Gate {
+	STARTSTOP,
 	NOT,
 	AND,
 	NAND,
@@ -11,4 +15,11 @@ enum Selected {
 	NOR,
 	XOR,
 	XNOR,
+}
+
+enum Direction {
+	RIGHT = 1,
+	DOWN = 2,
+	LEFT = 4,
+	UP = 8,
 }

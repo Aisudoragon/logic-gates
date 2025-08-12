@@ -1,8 +1,7 @@
 class_name HighlightLayer extends TileMapLayer
 
-var mode_selected: EditorMode.Selected = EditorMode.Selected.WIRE
 var wire_buffer_position: Array[Vector2i]
-var _gate_rotation := 0
+var _gate_rotation: int = 0
 
 
 func add_checkpoint(mouse_position: Vector2) -> void:
@@ -17,7 +16,7 @@ func rotate_gate() -> void:
 	_gate_rotation += 1 if _gate_rotation < 3 else -3
 
 
-func wire_highlight(mouse_position: Vector2i) -> void:
+func wire_highlight(mouse_position: Vector2) -> void:
 	clear()
 
 	wire_buffer_position[-1] = _mouse_to_grid(mouse_position)
@@ -30,14 +29,13 @@ func wire_highlight(mouse_position: Vector2i) -> void:
 		var start: Vector2i = wire_buffer_position[index]
 		var middle: Vector2i = wire_buffer_position[index + 1]
 		var end: Vector2i = wire_buffer_position[index + 2]
-
 		var direction: Vector2i = (middle - start).sign()
 		_wire_highlight_line(start, middle, direction)
 		direction = (end - middle).sign()
 		_wire_highlight_line(middle, end, direction)
 
 
-func gate_highlight(mouse_position: Vector2i) -> void:
+func gate_highlight(_mouse_position: Vector2) -> void:
 	clear()
 	#TODO
 
@@ -45,16 +43,16 @@ func gate_highlight(mouse_position: Vector2i) -> void:
 func _wire_highlight_line(from: Vector2i, to: Vector2i, direction: Vector2i) -> void:
 	if from.x == to.x and direction.y:
 		for buffer_y in range(from.y, to.y + direction.y, direction.y):
-			if not buffer_y == to.y:
+			if buffer_y != to.y:
 				_update_tile_wire_direction(Vector2i(from.x, buffer_y), Vector2i(0, direction.y))
-			if not buffer_y == from.y:
+			if buffer_y != from.y:
 				_update_tile_wire_direction(Vector2i(from.x, buffer_y), Vector2i(0, -direction.y))
 	elif direction.x:
 		for buffer_x in range(from.x, to.x + direction.x, direction.x):
-			if not buffer_x == to.x:
-				_update_tile_wire_direction(Vector2i(buffer_x, from.y), Vector2i(0, direction.x))
-			if not buffer_x == from.x:
-				_update_tile_wire_direction(Vector2i(buffer_x, from.y), Vector2i(0, -direction.x))
+			if buffer_x != to.x:
+				_update_tile_wire_direction(Vector2i(buffer_x, from.y), Vector2i(direction.x, 0))
+			if buffer_x != from.x:
+				_update_tile_wire_direction(Vector2i(buffer_x, from.y), Vector2i(-direction.x, 0))
 
 
 func _update_tile_wire_direction(grid_position: Vector2i, direction_vector: Vector2i, add := true) -> void:
@@ -62,18 +60,20 @@ func _update_tile_wire_direction(grid_position: Vector2i, direction_vector: Vect
 	var tile_data: TileData = get_cell_tile_data(grid_position)
 	if tile_data:
 		directions = tile_data.get_custom_data("connected_directions")
-
 	var direction_from_vector := (
-			0 if direction_vector == Vector2i.ZERO
-			else 0b0001 if direction_vector == Vector2i(1, 0)
-			else 0b0010 if direction_vector == Vector2i(0, 1)
-			else 0b0100 if direction_vector == Vector2i(-1, 0)
-			else 0b1000)
-
+			EditorMode.Direction.RIGHT if direction_vector == Vector2i.RIGHT
+			else EditorMode.Direction.DOWN if direction_vector == Vector2i.DOWN
+			else EditorMode.Direction.LEFT if direction_vector == Vector2i.LEFT
+			else EditorMode.Direction.UP if direction_vector == Vector2i.UP
+			else 0)
 	if add:
 		directions |= direction_from_vector
 	else:
 		directions &= ~directions
+
+		if not directions:
+			erase_cell(grid_position)
+			return
 	set_cell(grid_position, 0, Vector2i(directions, 0))
 
 

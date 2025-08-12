@@ -9,7 +9,6 @@ const ORDER_EXECUTES := 1500
 var order_queue: Array[Callable]
 var buffer_position: Array[Vector2i]
 var rotated: bool = false
-var gate_patterns: Dictionary[String, TileMapPattern]
 var gate_rotation := 0
 
 
@@ -383,11 +382,11 @@ func highlight_gate() -> void:
 	#highlight_layer.set_cell()
 
 
-func place_gate(gate_selected: EditorMode.Selected) -> void:
+func place_gate(gate_selected: EditorMode.Gate) -> void:
 	var mouse_pos: Vector2i = get_mouse_pos()
 
 	match gate_selected:
-		EditorMode.Selected.STARTEND:
+		EditorMode.Gate.STARTSTOP:
 			var cell_atlas_coords: Vector2i = gate_layer.get_cell_atlas_coords(mouse_pos)
 			if cell_atlas_coords == Vector2i(-1, -1):
 				gate_layer.set_cell(mouse_pos, 1, Vector2i(0, 0), 1)
@@ -395,19 +394,19 @@ func place_gate(gate_selected: EditorMode.Selected) -> void:
 				gate_layer.set_cell(mouse_pos, 1, Vector2i(1, 0), 1)
 			else:
 				gate_layer.set_cell(mouse_pos)
-		EditorMode.Selected.NOT:
+		EditorMode.Gate.NOT:
 			place_gate_on_layer(1)
-		EditorMode.Selected.AND:
+		EditorMode.Gate.AND:
 			place_gate_on_layer(2)
-		EditorMode.Selected.NAND:
+		EditorMode.Gate.NAND:
 			place_gate_on_layer(3)
-		EditorMode.Selected.OR:
+		EditorMode.Gate.OR:
 			place_gate_on_layer(4)
-		EditorMode.Selected.NOR:
+		EditorMode.Gate.NOR:
 			place_gate_on_layer(5)
-		EditorMode.Selected.XOR:
+		EditorMode.Gate.XOR:
 			place_gate_on_layer(6)
-		EditorMode.Selected.XNOR:
+		EditorMode.Gate.XNOR:
 			place_gate_on_layer(7)
 
 

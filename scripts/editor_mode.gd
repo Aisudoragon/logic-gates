@@ -7,7 +7,6 @@ enum Mode {
 }
 
 enum Gate {
-	STARTSTOP,
 	NOT,
 	AND,
 	NAND,
@@ -15,6 +14,7 @@ enum Gate {
 	NOR,
 	XOR,
 	XNOR,
+	STARTSTOP,
 }
 
 enum Direction {

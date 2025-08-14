@@ -1,56 +1,56 @@
 extends Node2D
 
-@export var wires: Wires
+@export var wire_layer: WireLayer
+@export var highlight_layer: HighlightLayer
 @export var wires_interface: WiresInterface
 
-var mode_selected: EditorMode.Selected = EditorMode.Selected.SELECT
-
-
-func _ready() -> void:
-	var test: Array[int]
-	test.append(1)
+var mode_selected: EditorMode.Mode = EditorMode.Mode.WIRE
+var gate_selected: EditorMode.Gate = EditorMode.Gate.STARTSTOP
 
 
 func _process(_delta: float) -> void:
-	wires_interface.update_queue_size((wires.get_queue_size()))
+	wires_interface.update_queue_size(wire_layer._logic_queue.size())
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	wires_interface.update_coordinates(wires.get_mouse_pos())
+	wires_interface.update_coordinates(highlight_layer._mouse_to_grid())
 	match mode_selected:
-		EditorMode.Selected.SELECT:
+		EditorMode.Mode.SELECT:
 			if event.is_action_pressed(&"place"):
-				wires.toggle_start_gate()
-		EditorMode.Selected.WIRE:
+				wire_layer.toggle_start_gate()
+		EditorMode.Mode.WIRE:
 			if event.is_action_pressed(&"place") or event.is_action_pressed(&"special"):
-				wires.add_checkpoint()
+				highlight_layer.add_checkpoint()
 			if event.is_action_pressed(&"rotate"):
-				wires.rotate_checkpoint()
-				wires.highlight_wire()
+				highlight_layer.change_direction_line()
+				highlight_layer.wire_highlight()
 			if event.is_action_released(&"place"):
-				wires.draw_wire()
-			if event.is_action_pressed(&"destroy"):
-				wires.delete_wire()
-
+				highlight_layer.place_wire()
+			#if event.is_action_pressed(&"destroy"):
+				#wires.delete_wire()
 			if event is InputEventMouseMotion:
 				if Input.is_action_pressed(&"place"):
-					wires.highlight_wire()
+					highlight_layer.wire_highlight()
 				else:
-					wires.highlight_point()
-				if Input.is_action_pressed(&"destroy"):
-					wires.delete_wire()
+					highlight_layer.point_highlight()
+				#if Input.is_action_pressed(&"destroy"):
+					#wires.delete_wire()
 		# gate behavior
 		_:
 			if event.is_action_pressed(&"place"):
-				wires.place_gate(mode_selected)
+				highlight_layer.place_wire()
 			if event.is_action_pressed(&"rotate"):
-				wires.rotate_gate()
-			if event.is_action_pressed(&"destroy"):
-				wires.destroy_gate()
-
+				highlight_layer.rotate_gate()
+				highlight_layer.gate_highlight(gate_selected)
+			#if event.is_action_pressed(&"destroy"):
+				#wires.destroy_gate()
 			if event is InputEventMouseMotion:
-				wires.highlight_gate()
+				highlight_layer.gate_highlight(gate_selected)
 
 
-func _on_editor_interface_mode_selected(mode: EditorMode.Selected) -> void:
+func _on_wires_interface_mode_selected(mode: EditorMode.Mode, gate: EditorMode.Gate) -> void:
 	mode_selected = mode
+	gate_selected = gate
+
+	if mode == EditorMode.Mode.SELECT:
+		highlight_layer.clear()
